@@ -1,12 +1,21 @@
-package com.dtn.schedulemanagementapp;
+package com.dtn.schedulemanagementapp.fragment;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
+import com.dtn.schedulemanagementapp.models.Schedule;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +23,11 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class CalendarFragment extends Fragment {
+
+    private RecyclerView rcvSchedules;
+    private ScheduleAdapter scheduleAdapter;
+    private ArrayList<Schedule>  scheduleArrayList;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,16 +63,39 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
+        View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        scheduleArrayList = new ArrayList<Schedule>();
+        scheduleArrayList.add(new Schedule(1, "Go to school", "",
+                new Date(2023, 7, 4),
+                new Date(2023, 7, 5), 1, 1));
+        scheduleArrayList.add(new Schedule(1, "Go to school", "",
+                new Date(2023, 7, 4),
+                new Date(2023, 7, 5), 1, 1));
+        scheduleArrayList.add(new Schedule(1, "Go to school", "",
+                new Date(2023, 7, 4),
+                new Date(2023, 7, 5), 1, 1));
+        scheduleArrayList.add(new Schedule(1, "Go to school", "",
+                new Date(2023, 7, 4),
+                new Date(2023, 7, 5), 1, 1));
+        scheduleArrayList.add(new Schedule(1, "Go to school", "",
+                new Date(2023, 7, 4),
+                new Date(2023, 7, 5), 1, 1));
+
+        rcvSchedules = view.findViewById(R.id.rcvSchedules);
+        scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
+
+        rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvSchedules.setAdapter(scheduleAdapter);
+
+
+
+        return view;
     }
 }
