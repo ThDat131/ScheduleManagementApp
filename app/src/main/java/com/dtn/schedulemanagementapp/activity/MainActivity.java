@@ -1,4 +1,4 @@
-package com.dtn.schedulemanagementapp;
+package com.dtn.schedulemanagementapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -6,25 +6,30 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
-import com.dtn.schedulemanagementapp.databinding.ActivityMainBinding;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.dtn.schedulemanagementapp.R;
+//import com.dtn.schedulemanagementapp.databinding.ActivityMainBinding;
+import com.dtn.schedulemanagementapp.fragment.CalendarFragment;
+import com.dtn.schedulemanagementapp.fragment.CategoryFragment;
+import com.dtn.schedulemanagementapp.fragment.ProfileFragment;
+import com.dtn.schedulemanagementapp.fragment.ScheduleFragment;
+import com.dtn.schedulemanagementapp.fragment.StatisticFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView botNav;
-
-    ActivityMainBinding binding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_main);
+
+        botNav = findViewById(R.id.botNav);
+
+        // Set màn hình xuất hiện đầu tiên
+        botNav.setSelectedItemId(R.id.calendar);
         replaceFragment(new CalendarFragment());
 
-        binding.botNav.setOnItemSelectedListener(item -> {
+        botNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.time) {
                 replaceFragment(new ScheduleFragment());
             }
@@ -39,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (item.getItemId() == R.id.profile) {
                 replaceFragment(new ProfileFragment());
-
             }
-
             return true;
         });
 
