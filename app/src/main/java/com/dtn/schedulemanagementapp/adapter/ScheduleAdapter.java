@@ -67,10 +67,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             lblScheduleName = itemView.findViewById(R.id.lblScheduleName);
             lblScheduleStartDate = itemView.findViewById(R.id.lblScheduleStartDate);
             lblScheduleEndDate = itemView.findViewById(R.id.lblScheduleEndDate);
-
         }
-
-
     }
 
 }
