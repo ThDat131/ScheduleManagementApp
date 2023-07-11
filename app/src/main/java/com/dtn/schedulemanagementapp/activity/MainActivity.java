@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import com.dtn.schedulemanagementapp.R;
-//import com.dtn.schedulemanagementapp.databinding.ActivityMainBinding;
 import com.dtn.schedulemanagementapp.fragment.CalendarFragment;
 import com.dtn.schedulemanagementapp.fragment.CategoryFragment;
 import com.dtn.schedulemanagementapp.fragment.ProfileFragment;
