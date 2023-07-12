@@ -81,7 +81,7 @@
             android:id="@+id/edtPassWord"/>
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btnLogout"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

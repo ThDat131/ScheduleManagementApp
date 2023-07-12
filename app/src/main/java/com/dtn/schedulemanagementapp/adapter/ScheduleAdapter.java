@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
@@ -45,8 +48,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Schedule schedule = scheduleArrayList.get(position);
         holder.lblScheduleName.setText(schedule.getName());
-        holder.lblScheduleStartDate.setText(String.valueOf(schedule.getStartDate()));
-        holder.lblScheduleEndDate.setText(String.valueOf(schedule.getStartDate()));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String timeStart = dateFormat.format(schedule.getStartDate());
+        String timeEnd = dateFormat.format(schedule.getEndDate());
+
+        holder.lblScheduleStartDate.setText(timeStart);
+        holder.lblScheduleEndDate.setText(timeEnd);
     }
 
     @Override
@@ -67,10 +74,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             lblScheduleName = itemView.findViewById(R.id.lblScheduleName);
             lblScheduleStartDate = itemView.findViewById(R.id.lblScheduleStartDate);
             lblScheduleEndDate = itemView.findViewById(R.id.lblScheduleEndDate);
-
         }
-
-
     }
 
 }

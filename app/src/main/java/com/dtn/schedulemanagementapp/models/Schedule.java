@@ -8,16 +8,16 @@ public class Schedule {
     private String note;
     private Date startDate;
     private Date endDate;
-    private int userId;
+    private String username;
     private int cateId;
 
-    public Schedule(int id, String name, String note, Date startDate, Date endDate, int userId, int cateId) {
+    public Schedule(int id, String name, String note, Date startDate, Date endDate, String username, int cateId) {
         this.id = id;
         this.name = name;
         this.note = note;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.userId = userId;
+        this.username = username;
         this.cateId = cateId;
     }
 
@@ -61,12 +61,12 @@ public class Schedule {
         this.endDate = endDate;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserId() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public int getCateId() {
