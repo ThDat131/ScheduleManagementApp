@@ -21,7 +21,8 @@
             android:name=".activity.AdminActivity"
             android:exported="false"
             android:label="@string/title_activity_admin"
-            android:theme="@style/Theme.ScheduleManagementApp" />
+            android:theme="@style/Theme.ScheduleManagementApp"
+            android:parentActivityName=".activity.MainActivity"/>
         <activity
             android:name=".activity.MainActivity"
             android:exported="true" >

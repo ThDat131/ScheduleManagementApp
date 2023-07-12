@@ -21,6 +21,7 @@ public class AdminActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Admin");
 
+
         btnUserM = findViewById(R.id.btnUserM);
 
         btnUserM.setOnClickListener(new View.OnClickListener() {

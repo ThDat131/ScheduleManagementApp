@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.dtn.schedulemanagementapp.R;
 //import com.dtn.schedulemanagementapp.databinding.ActivityMainBinding;
+import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.fragment.CalendarFragment;
 import com.dtn.schedulemanagementapp.fragment.CategoryFragment;
 import com.dtn.schedulemanagementapp.fragment.ProfileFragment;
@@ -22,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        DBHelper dbHelper = DBHelper.getInstance(MainActivity.this);
+        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
 
         botNav = findViewById(R.id.botNav);
 
