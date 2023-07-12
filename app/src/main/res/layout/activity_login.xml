@@ -5,7 +5,7 @@
     android:id="@+id/tvUserName"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileFragment">
+    tools:context=".activity.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,8 +58,10 @@
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
-            android:text="user name"
-            android:textColor="@color/grey_font" />
+            android:text=""
+            android:textColor="@color/grey_font"
+            android:id="@+id/edtUserName"
+            android:hint="username"/>
 
         <EditText
             android:layout_width="230dp"
@@ -73,8 +75,10 @@
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
-            android:text="password"
-            android:textColor="@color/grey_font" />
+            android:text=""
+            android:hint="password"
+            android:textColor="@color/grey_font"
+            android:id="@+id/edtPassWord"/>
 
         <Button
             android:id="@+id/btnLogin"
