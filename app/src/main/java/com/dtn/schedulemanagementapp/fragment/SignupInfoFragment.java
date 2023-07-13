@@ -10,9 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
+import com.dtn.schedulemanagementapp.activity.SignupActivity;
+import com.dtn.schedulemanagementapp.database.UserController;
+import com.dtn.schedulemanagementapp.models.User;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +27,13 @@ import com.dtn.schedulemanagementapp.activity.MainActivity;
  */
 public class SignupInfoFragment extends Fragment {
 
+    UserController uCtrl;
+    String edUser;
+    String edPass;
+    String edEmail;
+    EditText edFullName;
+    EditText edBDay;
+    EditText edCalName;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,6 +68,12 @@ public class SignupInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            edUser = bundle.getString("user");
+            edPass = bundle.getString("pass");
+            edEmail = bundle.getString("email");
+        }
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -66,9 +85,15 @@ public class SignupInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup_info, container, false);
         Button btnSignUp = view.findViewById(R.id.buttonFinish);
+        edFullName = view.findViewById(R.id.editTextFullName);
+        edBDay = view.findViewById(R.id.editTextBirthDate);
+        edCalName = view.findViewById(R.id.editTextCalName);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date date = new Date();
+                User u = new User(edUser, edPass, edFullName.toString(), date, edEmail, 1);
+                uCtrl.add(u);
                 moveToMainActivity();
             }
         });
@@ -77,7 +102,15 @@ public class SignupInfoFragment extends Fragment {
 
     private void moveToMainActivity() {
         Intent i = new Intent(getActivity(), MainActivity.class);
+//        i.putExtra("User", edUser);
+//        i.putExtra("Pass", edPass);
+//        i.putExtra("Email", edEmail);
+//        i.putExtra("fullName", edFullName.toString());
+//        i.putExtra("birthDay", edBDay.toString());
+//        i.putExtra("calName", edCalName.toString());
         startActivity(i);
         ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
+
+
 }

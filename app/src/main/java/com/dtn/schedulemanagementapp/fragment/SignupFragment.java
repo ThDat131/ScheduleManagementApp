@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.dtn.schedulemanagementapp.R;
 
@@ -19,6 +20,8 @@ import com.dtn.schedulemanagementapp.R;
  * create an instance of this fragment.
  */
 public class SignupFragment extends Fragment {
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,13 +68,21 @@ public class SignupFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
         Button btnNext = view.findViewById(R.id.buttonNext);
-
+        EditText edUsername = view.findViewById(R.id.editTextUsername);
+        EditText edPassword = view.findViewById(R.id.editTextPassword);
+        EditText edRepass = view.findViewById(R.id.editTextRePassword);
+        EditText edEmail = view.findViewById(R.id.editTextEmail);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new SignupInfoFragment();
+                Bundle bundle = new Bundle();
                 FragmentManager fragManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragTransact = fragManager.beginTransaction();
+                bundle.putString("user",edUsername.toString());
+                bundle.putString("pass",edPassword.toString());
+                bundle.putString("email",edEmail.toString());
+                fragment.setArguments(bundle);
                 fragTransact.replace(R.id.layoutSignup, fragment);
                 fragTransact.commit();
             }

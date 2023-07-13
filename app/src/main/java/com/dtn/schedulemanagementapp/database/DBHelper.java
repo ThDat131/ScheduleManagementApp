@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.Nullable;
+
 import com.dtn.schedulemanagementapp.models.Schedule;
 
 import java.text.ParseException;
@@ -24,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TABLE_REMINDER = "Reminder";
     private static final String TABLE_SCHEDULE = "Schedule";
     private static final String TABLE_SOUND = "Sound";
-    private static final String TABLE_USER = "User";
+    public static final String TABLE_USER = "User";
 
     // Category
 
@@ -60,12 +62,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // USER
 
-    private static final String USER_COL_USERNAME = "username";
-    private static final String USER_COL_PASSWORD = "password";
-    private static final String USER_COL_FULL_NAME = "fullName";
-    private static final String USER_COL_BIRTHDATE = "birthDate";
-    private static final String USER_COL_EMAIL = "email";
-    private static final String USER_COL_ROLE = "role";
+    public static final String USER_COL_USERNAME = "username";
+    public static final String USER_COL_PASSWORD = "password";
+    public static final String USER_COL_FULL_NAME = "fullName";
+    public static final String USER_COL_BIRTHDATE = "birthDate";
+    public static final String USER_COL_EMAIL = "email";
+    public static final String USER_COL_ROLE = "role";
 
     private static DBHelper sInstance;
 
@@ -78,7 +80,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
