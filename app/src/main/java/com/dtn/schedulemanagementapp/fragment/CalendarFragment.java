@@ -13,12 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
+import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +35,8 @@ public class CalendarFragment extends Fragment {
 
     private CalendarView calendaView;
     private RecyclerView rcvSchedules;
+
+    private CalendarView calendarView;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
 
@@ -79,27 +84,34 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         scheduleArrayList = new ArrayList<Schedule>();
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
 
         rcvSchedules = view.findViewById(R.id.rcvSchedules);
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
 
         rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvSchedules.setAdapter(scheduleAdapter);
+
+        calendarView = view.findViewById(R.id.calendarView);
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth, 0, 0, 0);
+
+                Date date = calendar.getTime();
+
+                DBHelper dbHelper = DBHelper.getInstance(getContext());
+
+                try {
+                    scheduleArrayList.clear();
+                    scheduleArrayList.addAll(dbHelper.getScheduleByDate(date));
+                    scheduleAdapter.notifyDataSetChanged();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
 //        calendaView = view.findViewById(R.id.calendarView);
 //        calendaView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {

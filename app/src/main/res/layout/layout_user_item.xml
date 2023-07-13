@@ -10,12 +10,12 @@
         android:id="@+id/imgRole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         app:srcCompat="@drawable/user_gear_solid" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="vertical">
@@ -38,6 +38,5 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         app:srcCompat="@drawable/chevron_right_solid" />
 </LinearLayout>
