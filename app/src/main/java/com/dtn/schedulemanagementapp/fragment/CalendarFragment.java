@@ -101,9 +101,7 @@ public class CalendarFragment extends Fragment {
                 DBHelper dbHelper = DBHelper.getInstance(getContext());
 
                 try {
-                    scheduleArrayList.clear();
-                    scheduleArrayList.addAll(dbHelper.getScheduleByDate(date));
-                    scheduleAdapter.notifyDataSetChanged();
+                    scheduleAdapter.setData(dbHelper.getScheduleByDate(date));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }

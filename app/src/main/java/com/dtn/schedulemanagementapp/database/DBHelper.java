@@ -1,11 +1,14 @@
 package com.dtn.schedulemanagementapp.database;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.dtn.schedulemanagementapp.models.Schedule;
+import com.dtn.schedulemanagementapp.models.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -201,8 +204,29 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
         return schedules;
+    }
 
+    public ArrayList<User> getUsers() {
+        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-
+        ArrayList<User> users = new ArrayList<User>();
+        String query = "SELECT * FROM " + TABLE_USER;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            try {
+                String username = cursor.getString(0);
+                String password = cursor.getString(1);
+                String fullName = cursor.getString(2);
+                String b = cursor.getString(3);
+                Date birthDate = dateSimple.parse(b);
+                String email = cursor.getString(4);
+                int role = cursor.getInt(5);
+                users.add(new User(username, password, fullName, birthDate, email, role));
+            } catch (Exception ex) {
+                Log.d("errorLoadUsers", ex.toString());
+            }
+        }
+        return users;
     }
 }
