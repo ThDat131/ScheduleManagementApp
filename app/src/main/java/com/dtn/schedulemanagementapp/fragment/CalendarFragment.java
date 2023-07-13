@@ -1,7 +1,10 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,6 +30,7 @@ import java.util.Date;
  */
 public class CalendarFragment extends Fragment {
 
+    private CalendarView calendaView;
     private RecyclerView rcvSchedules;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
@@ -94,8 +101,18 @@ public class CalendarFragment extends Fragment {
         rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvSchedules.setAdapter(scheduleAdapter);
 
-
+//        calendaView = view.findViewById(R.id.calendarView);
+//        calendaView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                intent.putExtra("frag",R.id.category);
+//                startActivity(intent);
+//                ((Activity) getActivity()).overridePendingTransition(0, 0);
+//            }
+//        });
 
         return view;
     }
+
 }
