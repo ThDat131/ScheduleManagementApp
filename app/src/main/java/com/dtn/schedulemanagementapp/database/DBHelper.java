@@ -1,5 +1,6 @@
 package com.dtn.schedulemanagementapp.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -228,5 +229,22 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
         return users;
+    }
+
+    public long addUser(User user) {
+        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_COL_USERNAME, user.getUsername());
+        values.put(USER_COL_PASSWORD, user.getPassword());
+        values.put(USER_COL_FULL_NAME, user.getFullName());
+        values.put(USER_COL_BIRTHDATE, dateSimple.format(user.getBirthDate()));
+        values.put(USER_COL_EMAIL, user.getEmail());
+        values.put(USER_COL_ROLE, user.getRole());
+
+        return db.insert(TABLE_USER, null, values);
+
     }
 }

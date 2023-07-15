@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.NewScheduleActivity">
-
+    tools:context=".activity.NewUserActivity"
+    android:padding="20dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewEvName"
+            android:id="@+id/txt1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:paddingLeft="10dp"
-            android:text="Event name"
+            android:text="Username"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:typeface="normal" />
@@ -41,136 +41,76 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewAlarm"
+            android:id="@+id/txt2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:paddingLeft="10dp"
-            android:text="Alarm"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:typeface="normal" />
-
-        <Button
-            android:id="@+id/buttonAddAlarm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/rounded_shape"
-            android:backgroundTint="@color/white"
-             />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <LinearLayout
-            android:layout_width="210dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewStartDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:paddingLeft="10dp"
-                android:text="Start Date"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:typeface="normal" />
-
-            <EditText
-                android:id="@+id/editTextStartDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/rounded_shape"
-                android:backgroundTint="@color/light_gray"
-                android:ems="10"
-                android:inputType="text"
-                android:padding="5dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewEndDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
-                android:paddingLeft="10dp"
-                android:text="End Date"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:typeface="normal" />
-
-            <EditText
-                android:id="@+id/editTextEndDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/rounded_shape"
-                android:backgroundTint="@color/light_gray"
-                android:ems="10"
-                android:inputType="text"
-                android:padding="5dp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewCate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:paddingLeft="10dp"
-            android:text="Alarm"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:typeface="normal" />
-
-        <Button
-            android:id="@+id/buttonCate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/white"
-            android:text="+add alarm"
-            android:textColor="@color/black"
-            android:gravity="left"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:paddingLeft="10dp"
-            android:text="Event name"
+            android:text="Password"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:typeface="normal" />
 
         <EditText
-            android:id="@+id/editTextDescription"
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_shape"
+            android:backgroundTint="@color/light_gray"
+            android:ems="10"
+            android:padding="5dp"
+            android:inputType="textPassword" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:paddingLeft="10dp"
+            android:text="Full name"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:typeface="normal" />
+
+        <EditText
+            android:id="@+id/txtFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_shape"
+            android:backgroundTint="@color/light_gray"
+            android:ems="10"
+            android:padding="5dp"
+            android:inputType="text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:paddingLeft="10dp"
+            android:text="Birthdate"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:typeface="normal" />
+
+        <EditText
+            android:id="@+id/txtBirthdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -179,6 +119,68 @@
             android:ems="10"
             android:inputType="text"
             android:padding="5dp" />
+
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:paddingLeft="10dp"
+            android:text="Email"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:typeface="normal" />
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_shape"
+            android:backgroundTint="@color/light_gray"
+            android:ems="10"
+            android:padding="5dp"
+            android:inputType="text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:paddingLeft="10dp"
+            android:text="Role"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:typeface="normal" />
+
+        <Spinner
+            android:id="@+id/spnRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add New User"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="40dp"/>
 </LinearLayout>
