@@ -83,7 +83,8 @@ public class ProfileFragment extends Fragment implements Serializable {
 //        mbtnProfileLogin.setText((CharSequence) bundle.getSerializable("key"));
 
 
-        SharedPreferences prefs = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
         f = prefs.getBoolean("logged in", false);
         if (f) {
             btnProfileLogin.setText("logout");
@@ -99,6 +100,8 @@ public class ProfileFragment extends Fragment implements Serializable {
                     startActivity(intent);
                 }
                 else {
+                    editor.clear();
+                    editor.apply();
                     btnProfileLogin.setText("login");
                     Toast.makeText(getContext(), "See you again", Toast.LENGTH_SHORT).show();
                 }

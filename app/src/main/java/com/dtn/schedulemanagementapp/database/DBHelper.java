@@ -203,6 +203,20 @@ public class DBHelper extends SQLiteOpenHelper {
         return schedules;
 
 
-
+    }
+    public int userPresent (String un, String pw){
+//        String sql = "SELECT * "
+//                + "FROM " + TABLE_USER
+//                + " WHERE"  + USER_COL_USERNAME + " = ? AND "
+//                + USER_COL_PASSWORD + " = ?";
+        String sql = "SELECT * "
+                + "FROM   TABLE_USE"
+                + " WHERE  USER_COL_USERNAME  = ? "
+                + "AND  USER_COL_PASSWORD  = ?";
+        String[] args = {un, pw};
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, args);
+        cursor.close();
+        return cursor.getCount();
     }
 }

@@ -14,14 +14,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.database.DBHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
     Button mbtnLogin;
     EditText medtUserName, medtPassWord;
+
     private boolean isEmpty(EditText etText) {
         return etText.getText().toString().trim().length() <= 0;
     }
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         medtPassWord = (EditText) findViewById(R.id.edtPassWord);
         String un = medtUserName.getText().toString();
         String pw = medtPassWord.getText().toString();
+        DBHelper dbHelper = DBHelper.getInstance(LoginActivity.this);
 //        TextView.OnEditorActionListener listener = new TextView.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -46,39 +50,33 @@ public class LoginActivity extends AppCompatActivity {
         mbtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isEmpty(medtUserName))
-                {
-                    Toast.makeText(getApplicationContext(),"You did not enter a username", Toast.LENGTH_SHORT).show();
+                if (isEmpty(medtUserName)) {
+                    Toast.makeText(getApplicationContext(), "You did not enter a username", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isEmpty(medtPassWord))
-                {
-                    Toast.makeText(LoginActivity.this,"You did not enter a password", Toast.LENGTH_SHORT).show();
+                if (isEmpty(medtPassWord)) {
+                    Toast.makeText(LoginActivity.this, "You did not enter a password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(userPresent(un, pw) != 0)
-                {
+                if (dbHelper.userPresent(un, pw) != 0) {
                     SharedPreferences prefs = getSharedPreferences("pref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("key_username", un);
                     editor.putBoolean("logged in", true);
                     editor.apply();
-                    Toast.makeText(getApplicationContext(), "Welcome back " + un, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Welcome back " + medtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable("key", medtUserName.getText().toString());
 //                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
+                else {
+                    Toast.makeText(getApplicationContext(), "Username or password incorrect!", Toast.LENGTH_SHORT).show();
+                    medtUserName.setText("");
+                    medtPassWord.setText("");
+                }
             }
         });
-    }
-    public int userPresent (String un, String pw){
-        SQLiteDatabase db = this.openOrCreateDatabase("DBHelper", MODE_PRIVATE, null);
-        String sql = "select * from TABLE_USER where username = un and password = pw";
-        Cursor cursor = db.rawQuery(sql, null);
-        cursor.close();
-        db.close();
-        return cursor.getCount();
     }
 }
