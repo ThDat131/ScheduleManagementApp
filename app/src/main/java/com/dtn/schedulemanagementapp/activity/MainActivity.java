@@ -62,4 +62,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.layoutMain, fragment);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

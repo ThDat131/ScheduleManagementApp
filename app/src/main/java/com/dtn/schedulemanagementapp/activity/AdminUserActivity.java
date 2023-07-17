@@ -37,12 +37,6 @@ public class AdminUserActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("User Management");
 
-
-
-//        userArrayList.add(new User("admin", "Admin@123", "Admin", new Date(2023, 7, 4), "admin@gmail.com", 1));
-//        userArrayList.add(new User("admin1", "Admin@123", "Admin", new Date(2023, 7, 4), "admin@gmail.com", 1));
-//        userArrayList.add(new User("admin2", "Admin@123", "Admin", new Date(2023, 7, 4), "admin@gmail.com", 0));
-
         svUser = findViewById(R.id.svUser);
         rcvUser = findViewById(R.id.rcvUser);
         btnAddNewUser = findViewById(R.id.btnAddNewUser);

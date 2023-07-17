@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.User;
+import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,16 +101,6 @@ public class NewUserActivity extends AppCompatActivity {
 
     private boolean addUser()  {
 
-        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat dateDMYFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
-        Date date = null;
-        try {
-            date = dateDMYFormat.parse(txtBirthdate.getText().toString());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        String birthdateFormat = dateSimple.format(date);
         User user = new User();
         String username;
         String password;
@@ -117,31 +108,30 @@ public class NewUserActivity extends AppCompatActivity {
         Date birthdate;
         String email;
         int role;
-        try {
-            username = txtUsername.getText().toString();
-            password = txtPassword.getText().toString();
-            fullName = txtFullName.getText().toString();
-            birthdate = dateSimple.parse(birthdateFormat);
-            email = txtEmail.getText().toString();
-            if (spnRole.getSelectedItem().toString().equals("Admin"))
-                role = 1;
-            else if (spnRole.getSelectedItem().toString().equals("User"))
-                role = 0;
-            else role = 0;
 
-            user.setUsername(username);
-            user.setPassword(password);
-            user.setFullName(fullName);
-            user.setBirthDate(birthdate);
-            user.setEmail(email);
-            user.setRole(role);
-        } catch (Exception ex) {
-            Log.d("parseDate", ex.toString());
-        }
+        username = txtUsername.getText().toString();
+        password = txtPassword.getText().toString();
+        fullName = txtFullName.getText().toString();
+        birthdate = CalendarUtils.StringToDate(txtBirthdate.getText().toString());
+        email = txtEmail.getText().toString();
+        if (spnRole.getSelectedItem().toString().equals("Admin"))
+            role = 1;
+        else if (spnRole.getSelectedItem().toString().equals("User"))
+            role = 0;
+        else role = 0;
+
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setFullName(fullName);
+        user.setBirthDate(birthdate);
+        user.setEmail(email);
+        user.setRole(role);
 
         DBHelper dbHelper = DBHelper.getInstance(NewUserActivity.this);
-        if (dbHelper.addUser(user) != 0)
+        if (dbHelper.addUser(user) != 0) {
             return true;
+
+        }
         return false;
 
     }

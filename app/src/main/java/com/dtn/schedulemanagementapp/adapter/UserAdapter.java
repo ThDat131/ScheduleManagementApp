@@ -1,19 +1,23 @@
 package com.dtn.schedulemanagementapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
+import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.models.User;
 
@@ -54,6 +58,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                 MenuInflater inflater = popupMenu.getMenuInflater();
                 inflater.inflate(R.menu.user_menu, popupMenu.getMenu());
                 popupMenu.show();
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.iEdit) {
+                            String username = String.valueOf(holder.lblUsername.getText());
+
+                            DBHelper dbHelper = DBHelper.getInstance(v.getContext());
+                            User user = dbHelper.getUserByUsername(username);
+                            Toast.makeText(v.getContext(), user.toString(), Toast.LENGTH_SHORT).show();
+
+                            return true;
+                        }
+                        else if (item.getItemId() == R.id.iDelete) {
+                            return false;
+                        }
+                        return false;
+                    }
+                });
             }
         });
     }

@@ -70,4 +70,9 @@ public class User {
     public void setRole(int role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return this.fullName +  " " + this.username;
+    }
 }
