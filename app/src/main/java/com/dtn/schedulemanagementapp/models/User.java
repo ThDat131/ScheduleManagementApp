@@ -10,6 +10,10 @@ public class User {
     private String email;
     private int role;
 
+    public User() {
+
+    }
+
     public User(String username, String password, String fullName, Date birthDate, String email, int role) {
         this.username = username;
         this.password = password;
@@ -65,5 +69,10 @@ public class User {
 
     public void setRole(int role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return this.fullName +  " " + this.username;
     }
 }
