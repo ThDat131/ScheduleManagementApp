@@ -101,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + CATEGORY_COL_NAME + " VARCHAR(50) NOT NULL,"
                 + CATEGORY_COL_COLOR + " VARCHAR(7),"
                 + CATEGORY_COL_USERNAME + " VARCHAR(50) NOT NULL,"
-                + "FOREIGN KEY (" + CATEGORY_COL_USERNAME + ") REFERENCES " + TABLE_USER + "(" + USER_COL_USERNAME + ")"
+                + "FOREIGN KEY (" + CATEGORY_COL_USERNAME + ") REFERENCES " + TABLE_USER + "(" + USER_COL_USERNAME + ")" + " ON DELETE CASCADE"
                 + ");";
 
         String CREATE_SCHEDULE_TABLE = "CREATE TABLE " + TABLE_SCHEDULE + "("
@@ -112,7 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + SCHEDULE_COL_END_DATE + " DATETIME NOT NULL,"
                 + SCHEDULE_COL_CATE_ID + " INTEGER NOT NULL,"
                 + SCHEDULE_COL_USERNAME + " VARCHAR(50) NOT NULL,"
-                + "FOREIGN KEY (" + SCHEDULE_COL_USERNAME + ") REFERENCES " + TABLE_USER + "(" + USER_COL_USERNAME + "),"
+                + "FOREIGN KEY (" + SCHEDULE_COL_USERNAME + ") REFERENCES " + TABLE_USER + "(" + USER_COL_USERNAME + ")" + " ON DELETE CASCADE" + ","
                 + "FOREIGN KEY (" + SCHEDULE_COL_CATE_ID + ") REFERENCES " + TABLE_CATEGORY + "(" + CATEGORY_COL_ID + ")"
                 + ");";
 
@@ -247,6 +247,28 @@ public class DBHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_USER, null, values);
 
     }
+
+    public long updateUser(User user) {
+        String userBirthdate = CalendarUtils.DateToString(user.getBirthDate(), "yyyy-MM-dd");
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(USER_COL_USERNAME, user.getUsername());
+        values.put(USER_COL_PASSWORD, user.getPassword());
+        values.put(USER_COL_FULL_NAME, user.getFullName());
+        values.put(USER_COL_BIRTHDATE, userBirthdate);
+        values.put(USER_COL_EMAIL, user.getEmail());
+        values.put(USER_COL_ROLE, user.getRole());
+
+        return db.update(TABLE_USER, values, USER_COL_USERNAME + " = " + "'" + user.getUsername() + "'", null);
+    }
+
+    public long deleteUser(String username) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        return db.delete(TABLE_USER, USER_COL_USERNAME + " = " + "'" + username + "'", null);
+    }
     public int userPresent (String un, String pw){
         String sql = "SELECT *"
                 + " FROM " + TABLE_USER
@@ -277,7 +299,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 email = cursor.getString(4);
                 role = cursor.getString(5);
 
-                date = CalendarUtils.StringToDate(birthDate);
+                date = CalendarUtils.StringToDate(birthDate, "yyyy-MM-dd");
 
                 roleNum = Integer.parseInt(role);
 

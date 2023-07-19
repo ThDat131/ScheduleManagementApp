@@ -1,7 +1,9 @@
 package com.dtn.schedulemanagementapp.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,10 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
+import com.dtn.schedulemanagementapp.activity.NewUserActivity;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.models.User;
@@ -63,16 +67,48 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.iEdit) {
-                            String username = String.valueOf(holder.lblUsername.getText());
 
+                            String username = String.valueOf(holder.lblUsername.getText());
                             DBHelper dbHelper = DBHelper.getInstance(v.getContext());
                             User user = dbHelper.getUserByUsername(username);
-                            Toast.makeText(v.getContext(), user.toString(), Toast.LENGTH_SHORT).show();
+
+                            Intent intent = new Intent(v.getContext(), NewUserActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putParcelable("selected_user", user);
+
+                            intent.putExtras(bundle);
+                            context.startActivity(intent);
 
                             return true;
                         }
                         else if (item.getItemId() == R.id.iDelete) {
-                            return false;
+
+                            String username = String.valueOf(holder.lblUsername.getText());
+                            DBHelper dbHelper = DBHelper.getInstance(v.getContext());
+                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                            builder.setTitle("Delete")
+                                    .setMessage("Are you sure to delete this user.\nAll schedules, categories of this user also be deleted")
+                                    .setIcon(R.drawable.trash_solid)
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(dbHelper.deleteUser(username) != 0) {
+                                                deleteItem(position);
+                                                Toast.makeText(v.getContext(), "Delete user " + username + " successfully", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else Toast.makeText(v.getContext(), "Something has wrong", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    })
+                                    .create().show();
+
+
+                            return true;
                         }
                         return false;
                     }
@@ -105,5 +141,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public void setData(ArrayList<User> users) {
         this.userArrayList = users;
         notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position) {
+        userArrayList.remove(position);
+        notifyItemRemoved(position);
     }
 }

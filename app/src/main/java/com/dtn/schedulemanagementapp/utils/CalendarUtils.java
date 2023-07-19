@@ -10,8 +10,8 @@ import java.util.Date;
 import java.util.PropertyPermission;
 
 public class CalendarUtils {
-    public static Date StringToDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static Date StringToDate(String date, String format) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         LocalDate parsedDate = LocalDate.parse(date, formatter);
         return Date.from(parsedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
