@@ -19,6 +19,7 @@ import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.ScheduleControlller;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
 import java.text.ParseException;
@@ -32,6 +33,8 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class CalendarFragment extends Fragment {
+
+    private ScheduleControlller schCtrl;
 
     private CalendarView calendaView;
     private RecyclerView rcvSchedules;
@@ -101,10 +104,8 @@ public class CalendarFragment extends Fragment {
 
                 Date date = calendar.getTime();
 
-                DBHelper dbHelper = DBHelper.getInstance(getContext());
-
                 try {
-                    scheduleAdapter.setData(dbHelper.getScheduleByDate(date));
+                    scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }

@@ -68,7 +68,6 @@ public class NewUserActivity extends AppCompatActivity {
                 } , year, month, day);
 
                 datePickerDialog.show();
-
             }
         });
 

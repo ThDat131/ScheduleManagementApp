@@ -79,9 +79,9 @@ public class SignupFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 FragmentManager fragManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragTransact = fragManager.beginTransaction();
-                bundle.putString("user",edUsername.toString());
-                bundle.putString("pass",edPassword.toString());
-                bundle.putString("email",edEmail.toString());
+                bundle.putString("user",edUsername.getText().toString());
+                bundle.putString("pass",edPassword.getText().toString());
+                bundle.putString("email",edEmail.getText().toString());
                 fragment.setArguments(bundle);
                 fragTransact.replace(R.id.layoutSignup, fragment);
                 fragTransact.commit();

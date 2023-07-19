@@ -43,7 +43,8 @@
         android:ems="10"
         android:background="@drawable/rounded_shape"
         android:hint="Date of Birth"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:focusable="false" />
 
     <EditText
         android:id="@+id/editTextCalName"

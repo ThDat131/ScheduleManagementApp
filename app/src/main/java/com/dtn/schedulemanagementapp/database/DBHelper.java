@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_CATEGORY = "Category";
     private static final String TABLE_REMINDER = "Reminder";
-    private static final String TABLE_SCHEDULE = "Schedule";
+    public static final String TABLE_SCHEDULE = "Schedule";
     private static final String TABLE_SOUND = "Sound";
     public static final String TABLE_USER = "User";
 
@@ -49,13 +49,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Schedule
 
-    private static final String SCHEDULE_COL_ID = "id";
-    private static final String SCHEDULE_COL_NAME = "name";
-    private static final String SCHEDULE_COL_NOTE = "note";
-    private static final String SCHEDULE_COL_START_DATE= "startDate";
-    private static final String SCHEDULE_COL_END_DATE = "endDate";
-    private static final String SCHEDULE_COL_CATE_ID = "cateId";
-    private static final String SCHEDULE_COL_USERNAME = "username";
+    public static final String SCHEDULE_COL_ID = "id";
+    public static final String SCHEDULE_COL_NAME = "name";
+    public static final String SCHEDULE_COL_NOTE = "note";
+    public static final String SCHEDULE_COL_START_DATE= "startDate";
+    public static final String SCHEDULE_COL_END_DATE = "endDate";
+    public static final String SCHEDULE_COL_CATE_ID = "cateId";
+    public static final String SCHEDULE_COL_USERNAME = "userId";
 
     // SOUND
 
@@ -173,40 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {
-        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateSchedule);
-
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Date dateNext = calendar.getTime();
-
-        String dateStringStart = dateSimple.format(dateSchedule);
-        String dateStringEnd = dateSimple.format(dateNext);
-        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-        String query = "SELECT * "
-                + "FROM " + TABLE_SCHEDULE
-                + " WHERE " + SCHEDULE_COL_START_DATE + " >= ? AND " + SCHEDULE_COL_END_DATE + " < ?";
-
-        String[] args = {dateStringStart, dateStringEnd};
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, args);
-
-        while(cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String note = cursor.getString(2);
-            Date startDate = dateSimple.parse(cursor.getString(3));
-            Date endDate = dateSimple.parse(cursor.getString(4));
-            int cateId = cursor.getInt(5);
-            String username = cursor.getString(6);
-
-            schedules.add(new Schedule(id, name, note, startDate, endDate, username, cateId));
-
-        }
-        return schedules;
-    }
 
     public ArrayList<User> getUsers() {
         SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
