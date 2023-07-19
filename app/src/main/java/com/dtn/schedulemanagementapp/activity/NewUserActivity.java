@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.UserController;
 import com.dtn.schedulemanagementapp.models.User;
 import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
@@ -173,8 +174,8 @@ public class NewUserActivity extends AppCompatActivity {
         user.setEmail(email);
         user.setRole(role);
 
-        DBHelper dbHelper = DBHelper.getInstance(NewUserActivity.this);
-        if (dbHelper.addUser(user) != 0) {
+        UserController userController = new UserController(NewUserActivity.this);
+        if (userController.addUser(user) != 0) {
             return true;
 
         }
@@ -210,8 +211,8 @@ public class NewUserActivity extends AppCompatActivity {
         user.setEmail(email);
         user.setRole(role);
 
-        DBHelper dbHelper = DBHelper.getInstance(NewUserActivity.this);
-        if (dbHelper.updateUser(user) != 0) {
+        UserController userController = new UserController(NewUserActivity.this);
+        if (userController.updateUser(user) != 0) {
             return true;
         }
         return false;

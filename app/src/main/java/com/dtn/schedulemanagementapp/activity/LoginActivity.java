@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.UserController;
 
 import java.lang.annotation.Inherited;
 
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         medtUserName = (EditText) findViewById(R.id.edtUserName);
         medtPassWord = (EditText) findViewById(R.id.edtPassWord);
 
-        DBHelper dbHelper = DBHelper.getInstance(LoginActivity.this);
+        UserController userController = new UserController(LoginActivity.this);
 //        TextView.OnEditorActionListener listener = new TextView.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "You did not enter a password", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (dbHelper.userPresent(un, pw) == 1) {
+                if (userController.userPresent(un, pw) == 1) {
                     SharedPreferences prefs = getSharedPreferences("pref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("key_username", un);

@@ -24,52 +24,52 @@ public class DBHelper extends SQLiteOpenHelper {
 
      // Tables name
 
-    private static final String TABLE_CATEGORY = "Category";
-    private static final String TABLE_REMINDER = "Reminder";
-    private static final String TABLE_SCHEDULE = "Schedule";
-    private static final String TABLE_SOUND = "Sound";
-    private static final String TABLE_USER = "User";
+    public static final String TABLE_CATEGORY = "Category";
+    public static final String TABLE_REMINDER = "Reminder";
+    public static final String TABLE_SCHEDULE = "Schedule";
+    public static final String TABLE_SOUND = "Sound";
+    public static final String TABLE_USER = "User";
 
     // Category
 
-    private static final String CATEGORY_COL_ID = "id";
-    private static final String CATEGORY_COL_NAME = "name";
-    private static final String CATEGORY_COL_COLOR = "color";
-    private static final String CATEGORY_COL_USERNAME = "username";
+    public static final String CATEGORY_COL_ID = "id";
+    public static final String CATEGORY_COL_NAME = "name";
+    public static final String CATEGORY_COL_COLOR = "color";
+    public static final String CATEGORY_COL_USERNAME = "username";
 
     // Reminder
 
-    private static final String REMINDER_COL_ID = "id";
-    private static final String REMINDER_COL_NAME = "name";
-    private static final String REMINDER_COL_TIME_REMIND= "timeRemind";
-    private static final String REMINDER_COL_SCHEDULE_ID = "scheduleId";
-    private static final String REMINDER_COL_SOUND_ID = "soundId";
+    public static final String REMINDER_COL_ID = "id";
+    public static final String REMINDER_COL_NAME = "name";
+    public static final String REMINDER_COL_TIME_REMIND= "timeRemind";
+    public static final String REMINDER_COL_SCHEDULE_ID = "scheduleId";
+    public static final String REMINDER_COL_SOUND_ID = "soundId";
 
     // Schedule
 
-    private static final String SCHEDULE_COL_ID = "id";
-    private static final String SCHEDULE_COL_NAME = "name";
-    private static final String SCHEDULE_COL_NOTE = "note";
-    private static final String SCHEDULE_COL_START_DATE= "startDate";
-    private static final String SCHEDULE_COL_END_DATE = "endDate";
-    private static final String SCHEDULE_COL_CATE_ID = "cateId";
-    private static final String SCHEDULE_COL_USERNAME = "username";
+    public static final String SCHEDULE_COL_ID = "id";
+    public static final String SCHEDULE_COL_NAME = "name";
+    public static final String SCHEDULE_COL_NOTE = "note";
+    public static final String SCHEDULE_COL_START_DATE= "startDate";
+    public static final String SCHEDULE_COL_END_DATE = "endDate";
+    public static final String SCHEDULE_COL_CATE_ID = "cateId";
+    public static final String SCHEDULE_COL_USERNAME = "username";
 
     // SOUND
 
-    private static final String SOUND_COL_ID = "id";
-    private static final String SOUND_COL_NAME = "name";
-    private static final String SOUND_COL_URL_SOUND = "urlSound";
+    public static final String SOUND_COL_ID = "id";
+    public static final String SOUND_COL_NAME = "name";
+    public static final String SOUND_COL_URL_SOUND = "urlSound";
 
 
     // USER
 
-    private static final String USER_COL_USERNAME = "username";
-    private static final String USER_COL_PASSWORD = "password";
-    private static final String USER_COL_FULL_NAME = "fullName";
-    private static final String USER_COL_BIRTHDATE = "birthDate";
-    private static final String USER_COL_EMAIL = "email";
-    private static final String USER_COL_ROLE = "role";
+    public static final String USER_COL_USERNAME = "username";
+    public static final String USER_COL_PASSWORD = "password";
+    public static final String USER_COL_FULL_NAME = "fullName";
+    public static final String USER_COL_BIRTHDATE = "birthDate";
+    public static final String USER_COL_EMAIL = "email";
+    public static final String USER_COL_ROLE = "role";
 
     private static DBHelper sInstance;
 
@@ -207,104 +207,5 @@ public class DBHelper extends SQLiteOpenHelper {
         return schedules;
     }
 
-    public ArrayList<User> getUsers() {
-        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        ArrayList<User> users = new ArrayList<User>();
-        String query = "SELECT * FROM " + TABLE_USER;
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        while (cursor.moveToNext()) {
-            try {
-                String username = cursor.getString(0);
-                String password = cursor.getString(1);
-                String fullName = cursor.getString(2);
-                String b = cursor.getString(3);
-                Date birthDate = dateSimple.parse(b);
-                String email = cursor.getString(4);
-                int role = cursor.getInt(5);
-                users.add(new User(username, password, fullName, birthDate, email, role));
-            } catch (Exception ex) {
-                Log.d("errorLoadUsers", ex.toString());
-            }
-        }
-        return users;
-    }
 
-    public long addUser(User user) {
-        String userBirthdate = CalendarUtils.DateToString(user.getBirthDate(), "yyyy-MM-dd");
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(USER_COL_USERNAME, user.getUsername());
-        values.put(USER_COL_PASSWORD, user.getPassword());
-        values.put(USER_COL_FULL_NAME, user.getFullName());
-        values.put(USER_COL_BIRTHDATE, userBirthdate);
-        values.put(USER_COL_EMAIL, user.getEmail());
-        values.put(USER_COL_ROLE, user.getRole());
-
-        return db.insert(TABLE_USER, null, values);
-
-    }
-
-    public long updateUser(User user) {
-        String userBirthdate = CalendarUtils.DateToString(user.getBirthDate(), "yyyy-MM-dd");
-
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(USER_COL_USERNAME, user.getUsername());
-        values.put(USER_COL_PASSWORD, user.getPassword());
-        values.put(USER_COL_FULL_NAME, user.getFullName());
-        values.put(USER_COL_BIRTHDATE, userBirthdate);
-        values.put(USER_COL_EMAIL, user.getEmail());
-        values.put(USER_COL_ROLE, user.getRole());
-
-        return db.update(TABLE_USER, values, USER_COL_USERNAME + " = " + "'" + user.getUsername() + "'", null);
-    }
-
-    public long deleteUser(String username) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        return db.delete(TABLE_USER, USER_COL_USERNAME + " = " + "'" + username + "'", null);
-    }
-    public int userPresent (String un, String pw){
-        String sql = "SELECT *"
-                + " FROM " + TABLE_USER
-                + " WHERE "+  USER_COL_USERNAME + " = ?"
-                + " AND " + USER_COL_PASSWORD + " = ?";
-        String[] args = {un, pw};
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, args);
-        return cursor.getCount();
-    }
-
-    public User getUserByUsername(String userName) {
-        String username = "", password = "", fullName = "", birthDate ="", email ="", role = "";
-        Date date = new Date();
-        int roleNum = 0;
-        String query = "SELECT * FROM " + TABLE_USER +
-                " WHERE " + USER_COL_USERNAME  + " = ?";
-        SQLiteDatabase db = getReadableDatabase();
-        String[] args = {userName};
-        Cursor cursor = db.rawQuery(query, args);
-
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                username = cursor.getString(0);
-                password = cursor.getString(1);
-                fullName = cursor.getString(2);
-                birthDate = cursor.getString(3);
-                email = cursor.getString(4);
-                role = cursor.getString(5);
-
-                date = CalendarUtils.StringToDate(birthDate, "yyyy-MM-dd");
-
-                roleNum = Integer.parseInt(role);
-
-            }
-            return new User(username, password, fullName, date, email, roleNum);
-        }
-        return new User();
-    }
 }

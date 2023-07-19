@@ -22,10 +22,13 @@ import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.activity.NewUserActivity;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.UserController;
 import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.models.User;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     private ArrayList<User> userArrayList;
@@ -69,8 +72,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                         if (item.getItemId() == R.id.iEdit) {
 
                             String username = String.valueOf(holder.lblUsername.getText());
-                            DBHelper dbHelper = DBHelper.getInstance(v.getContext());
-                            User user = dbHelper.getUserByUsername(username);
+                            UserController userController = new UserController(v.getContext());
+                            User user = userController.getUserByUsername(username);
 
                             Intent intent = new Intent(v.getContext(), NewUserActivity.class);
                             Bundle bundle = new Bundle();
@@ -84,7 +87,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                         else if (item.getItemId() == R.id.iDelete) {
 
                             String username = String.valueOf(holder.lblUsername.getText());
-                            DBHelper dbHelper = DBHelper.getInstance(v.getContext());
+                            UserController userController = new UserController(v.getContext());
                             AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                             builder.setTitle("Delete")
                                     .setMessage("Are you sure to delete this user.\nAll schedules, categories of this user also be deleted")
@@ -92,7 +95,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(dbHelper.deleteUser(username) != 0) {
+                                            if(userController.deleteUser(username) != 0) {
                                                 deleteItem(position);
                                                 Toast.makeText(v.getContext(), "Delete user " + username + " successfully", Toast.LENGTH_SHORT).show();
                                             }

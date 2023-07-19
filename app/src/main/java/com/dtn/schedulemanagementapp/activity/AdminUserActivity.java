@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.adapter.UserAdapter;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.UserController;
 import com.dtn.schedulemanagementapp.models.User;
 
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class AdminUserActivity extends AppCompatActivity {
         rcvUser = findViewById(R.id.rcvUser);
         btnAddNewUser = findViewById(R.id.btnAddNewUser);
 
-        DBHelper dbHelper = DBHelper.getInstance(AdminUserActivity.this);
-        userArrayList = dbHelper.getUsers();
+        UserController userController = new UserController(AdminUserActivity.this);
+        userArrayList = userController.getUsers();
 
         userAdapter = new UserAdapter( userArrayList,AdminUserActivity.this);
         rcvUser.setLayoutManager(new LinearLayoutManager(AdminUserActivity.this));
