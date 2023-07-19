@@ -1,5 +1,7 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.ScheduleControlller;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
 import java.text.ParseException;
@@ -31,6 +34,9 @@ import java.util.Date;
  */
 public class CalendarFragment extends Fragment {
 
+    private ScheduleControlller schCtrl;
+
+    private CalendarView calendaView;
     private RecyclerView rcvSchedules;
 
     private CalendarView calendarView;
@@ -98,17 +104,26 @@ public class CalendarFragment extends Fragment {
 
                 Date date = calendar.getTime();
 
-                DBHelper dbHelper = DBHelper.getInstance(getContext());
-
                 try {
-                    scheduleAdapter.setData(dbHelper.getScheduleByDate(date));
+                    scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
 
+//        calendaView = view.findViewById(R.id.calendarView);
+//        calendaView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                intent.putExtra("frag",R.id.category);
+//                startActivity(intent);
+//                ((Activity) getActivity()).overridePendingTransition(0, 0);
+//            }
+//        });
 
         return view;
     }
+
 }

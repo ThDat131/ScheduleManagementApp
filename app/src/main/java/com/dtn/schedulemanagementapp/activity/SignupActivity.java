@@ -6,8 +6,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.database.UserController;
 import com.dtn.schedulemanagementapp.fragment.SignupFragment;
 
 public class SignupActivity extends AppCompatActivity {
@@ -17,7 +20,6 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
         replaceFragment(new SignupFragment());
     }
 

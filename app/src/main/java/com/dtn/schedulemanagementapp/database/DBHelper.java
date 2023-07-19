@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.models.User;
 import com.dtn.schedulemanagementapp.utils.CalendarUtils;
@@ -82,7 +84,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -172,40 +173,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {
-        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dateSchedule);
-
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Date dateNext = calendar.getTime();
-
-        String dateStringStart = dateSimple.format(dateSchedule);
-        String dateStringEnd = dateSimple.format(dateNext);
-        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-        String query = "SELECT * "
-                + "FROM " + TABLE_SCHEDULE
-                + " WHERE " + SCHEDULE_COL_START_DATE + " >= ? AND " + SCHEDULE_COL_END_DATE + " < ?";
-
-        String[] args = {dateStringStart, dateStringEnd};
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, args);
-
-        while(cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String note = cursor.getString(2);
-            Date startDate = dateSimple.parse(cursor.getString(3));
-            Date endDate = dateSimple.parse(cursor.getString(4));
-            int cateId = cursor.getInt(5);
-            String username = cursor.getString(6);
-
-            schedules.add(new Schedule(id, name, note, startDate, endDate, username, cateId));
-
-        }
-        return schedules;
-    }
 
 
 }
