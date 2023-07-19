@@ -36,6 +36,9 @@ public class NewUserActivity extends AppCompatActivity {
     TextView txtEmail;
     Spinner spnRole;
     Button btnAdd;
+    Button btnUpdate;
+
+    ArrayAdapter<String> roleAdapter;
 
     int role;
 
@@ -44,12 +47,74 @@ public class NewUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Add New User");
-
         Mapping();
         initRoleOption();
+
         txtBirthdate.setFocusable(false);
+        txtBirthdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(NewUserActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        LocalDate date = LocalDate.of(year, month + 1, dayOfMonth);
+                        txtBirthdate.setText(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                    }
+                } , year, month, day);
+
+                datePickerDialog.show();
+
+            }
+        });
+
+
+        Bundle receivedBundle = getIntent().getExtras();
+        if (receivedBundle != null) {
+            User user = receivedBundle.getParcelable("selected_user");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Edit user " + user.getUsername());
+            btnAdd.setVisibility(View.GONE);
+            txtUsername.setFocusable(false);
+
+            txtUsername.setText(user.getUsername());
+            txtPassword.setText(user.getPassword());
+            txtFullName.setText(user.getFullName());
+            txtBirthdate.setText(CalendarUtils.DateToString(user.getBirthDate(), "dd/MM/yyyy"));
+            txtEmail.setText(user.getEmail());
+
+            if (user.getRole() == 0)
+                spnRole.setSelection(0);
+            else if (user.getRole() == 1)
+                spnRole.setSelection(1);
+
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (updateUser()) {
+                        Toast.makeText(NewUserActivity.this, "Update user "
+                                + user.getUsername() + " successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(NewUserActivity.this, AdminUserActivity.class);
+                        startActivity(intent);
+                    }
+                    else Toast.makeText(NewUserActivity.this, "Something has wrong",
+                            Toast.LENGTH_SHORT).show();
+
+
+                }
+            });
+
+            return;
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Add New User");
+        btnUpdate.setVisibility(View.GONE);
+
         txtBirthdate.setText(getDateToday());
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -67,26 +132,6 @@ public class NewUserActivity extends AppCompatActivity {
             }
         });
 
-        txtBirthdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(NewUserActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        txtBirthdate.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                    }
-                } , year, month, day);
-
-                datePickerDialog.show();
-
-            }
-        });
-
     }
 
     private void Mapping() {
@@ -97,6 +142,7 @@ public class NewUserActivity extends AppCompatActivity {
         txtEmail = findViewById(R.id.txtEmail);
         spnRole = findViewById(R.id.spnRole);
         btnAdd = findViewById(R.id.btnAdd);
+        btnUpdate = findViewById(R.id.btnUpdate);
     }
 
     private boolean addUser()  {
@@ -112,7 +158,7 @@ public class NewUserActivity extends AppCompatActivity {
         username = txtUsername.getText().toString();
         password = txtPassword.getText().toString();
         fullName = txtFullName.getText().toString();
-        birthdate = CalendarUtils.StringToDate(txtBirthdate.getText().toString());
+        birthdate = CalendarUtils.StringToDate(txtBirthdate.getText().toString(), "dd/MM/yyyy");
         email = txtEmail.getText().toString();
         if (spnRole.getSelectedItem().toString().equals("Admin"))
             role = 1;
@@ -136,14 +182,48 @@ public class NewUserActivity extends AppCompatActivity {
 
     }
 
+    private boolean updateUser()  {
+
+        User user = new User();
+        String username;
+        String password;
+        String fullName;
+        Date birthdate;
+        String email;
+        int role;
+
+        username = txtUsername.getText().toString();
+        password = txtPassword.getText().toString();
+        fullName = txtFullName.getText().toString();
+        birthdate = CalendarUtils.StringToDate(txtBirthdate.getText().toString(), "dd/MM/yyyy");
+        email = txtEmail.getText().toString();
+        if (spnRole.getSelectedItem().toString().equals("Admin"))
+            role = 1;
+        else if (spnRole.getSelectedItem().toString().equals("User"))
+            role = 0;
+        else role = 0;
+
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setFullName(fullName);
+        user.setBirthDate(birthdate);
+        user.setEmail(email);
+        user.setRole(role);
+
+        DBHelper dbHelper = DBHelper.getInstance(NewUserActivity.this);
+        if (dbHelper.updateUser(user) != 0) {
+            return true;
+        }
+        return false;
+    }
+
     private void initRoleOption() {
-        String[] roles = {"Admin", "User"};
-        ArrayAdapter<String> roleAdapter = new ArrayAdapter<String>(NewUserActivity.this,
+        String[] roles = {"User", "Admin"};
+        roleAdapter = new ArrayAdapter<String>(NewUserActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, roles );
 
         spnRole.setAdapter(roleAdapter);
-
-        spnRole.setSelection(1);
+        spnRole.setSelection(0);
     }
 
     private String getDateToday() {
@@ -152,6 +232,12 @@ public class NewUserActivity extends AppCompatActivity {
         String dateFormatted = today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         return dateFormatted;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(NewUserActivity.this, AdminUserActivity.class);
+        startActivity(intent);
     }
 
 

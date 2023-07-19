@@ -47,39 +47,38 @@
         </RelativeLayout>
 
         <EditText
+            android:id="@+id/edtUserName"
             android:layout_width="230dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/login_round_edt"
             android:gravity="center"
+            android:hint="username"
             android:padding="5dip"
             android:shadowColor="@color/text_shadow_white"
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
-            android:text=""
-            android:textColor="@color/grey_font"
-            android:id="@+id/edtUserName"
-            android:hint="username"
-            />
+            android:text="thdat"
+            android:textColor="@color/grey_font" />
 
         <EditText
+            android:id="@+id/edtPassWord"
             android:layout_width="230dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/login_round_edt"
             android:gravity="center"
+            android:hint="password"
             android:padding="5dip"
             android:shadowColor="@color/text_shadow_white"
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
-            android:text=""
-            android:hint="password"
-            android:textColor="@color/grey_font"
-            android:id="@+id/edtPassWord"/>
+            android:text="123"
+            android:textColor="@color/grey_font" />
 
         <Button
             android:id="@+id/btnLogin"
