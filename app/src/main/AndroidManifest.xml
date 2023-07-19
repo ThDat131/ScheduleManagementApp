@@ -13,13 +13,42 @@
         android:theme="@style/Theme.ScheduleManagementApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.NewUserActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.AdminUserActivity"/>
+        <activity
+            android:name=".activity.AdminUserActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.AdminActivity" />
+        <activity
+            android:name=".activity.AdminActivity"
+            android:exported="false"
+            android:label="@string/title_activity_admin"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/Theme.ScheduleManagementApp" />
+        <activity
+            android:name=".activity.NewScheduleActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activity.SignupActivity"
+            android:exported="true"
+            android:parentActivityName=".activity.LoginActivity" >
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false">
+
         </activity>
     </application>
 

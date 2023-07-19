@@ -1,7 +1,10 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,12 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
+import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.ScheduleControlller;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,7 +34,12 @@ import java.util.Date;
  */
 public class CalendarFragment extends Fragment {
 
+    private ScheduleControlller schCtrl;
+
+    private CalendarView calendaView;
     private RecyclerView rcvSchedules;
+
+    private CalendarView calendarView;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
 
@@ -72,21 +87,6 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         scheduleArrayList = new ArrayList<Schedule>();
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
-        scheduleArrayList.add(new Schedule(1, "Go to school", "",
-                new Date(2023, 7, 4),
-                new Date(2023, 7, 5), 1, 1));
 
         rcvSchedules = view.findViewById(R.id.rcvSchedules);
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
@@ -94,8 +94,37 @@ public class CalendarFragment extends Fragment {
         rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvSchedules.setAdapter(scheduleAdapter);
 
+        calendarView = view.findViewById(R.id.calendarView);
 
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth, 0, 0, 0);
+
+                Date date = calendar.getTime();
+
+                try {
+                    schCtrl = new ScheduleControlller(view.getContext());
+                    scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+//        calendaView = view.findViewById(R.id.calendarView);
+//        calendaView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                intent.putExtra("frag",R.id.category);
+//                startActivity(intent);
+//                ((Activity) getActivity()).overridePendingTransition(0, 0);
+//            }
+//        });
 
         return view;
     }
+
 }

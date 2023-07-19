@@ -8,25 +8,26 @@
     android:paddingRight="20dp"
     android:paddingBottom="20dp">
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/calendar_regular" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="6"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/calendar_regular" />
 
             <TextView
                 android:id="@+id/lblScheduleName"
@@ -34,13 +35,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="ScheduleName" />
+                android:text="ScheduleName"
+                android:textSize="20sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -48,34 +50,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="StartDate" />
+                android:text="StartDate"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=" - " />
 
             <TextView
                 android:id="@+id/lblScheduleEndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="EndDate" />
+                android:text="EndDate"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
         android:layout_height="130dp"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/btnEdit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/btnInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             app:srcCompat="@drawable/pen_solid" />
 
         <ImageButton
             android:id="@+id/btnDelete"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:srcCompat="@drawable/trash_solid" />
+
     </LinearLayout>
 </LinearLayout>

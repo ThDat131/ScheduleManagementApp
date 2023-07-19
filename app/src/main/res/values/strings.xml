@@ -2,4 +2,7 @@
     <string name="app_name">ScheduleManagementApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_admin">AdminActivity</string>
+    <string name="input_required">Please input all information before submit</string>
+    <string name="password_not_match">Password not match, please try again</string>
 </resources>
