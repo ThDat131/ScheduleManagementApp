@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.LoginActivity;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.activity.NewUserActivity;
 import com.dtn.schedulemanagementapp.database.UserController;
@@ -39,7 +41,6 @@ public class SignupInfoFragment extends Fragment {
     String edEmail;
     EditText edFullName;
     EditText edBDay;
-    EditText edCalName;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -93,7 +94,6 @@ public class SignupInfoFragment extends Fragment {
         Button btnSignUp = view.findViewById(R.id.buttonFinish);
         edFullName = view.findViewById(R.id.editTextFullName);
         edBDay = view.findViewById(R.id.editTextBirthDate);
-        edCalName = view.findViewById(R.id.editTextCalName);
         edBDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,8 +117,12 @@ public class SignupInfoFragment extends Fragment {
             public void onClick(View v) {
                 uCtrl = new UserController(view.getContext());
                 User u = new User(edUser, edPass, edFullName.getText().toString(), CalendarUtils.StringToDate(edBDay.getText().toString(), "dd/MM/yyyy"), edEmail, 0);
-                uCtrl.addNewUser(u);
-                moveToMainActivity();
+                if (uCtrl.addUser(u) > 0) {
+                    Toast.makeText(v.getContext(), "Sign up successfully", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(v.getContext(), "Something has wrong", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(v.getContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         return view;

@@ -22,6 +22,8 @@ import java.lang.annotation.Inherited;
 public class LoginActivity extends AppCompatActivity {
 
     Button mbtnLogin;
+
+    Button mbtnSignup;
     EditText medtUserName, medtPassWord;
 
     private boolean isEmpty(EditText etText) {
@@ -33,10 +35,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         mbtnLogin = (Button) findViewById(R.id.btnLogin);
         medtUserName = (EditText) findViewById(R.id.edtUserName);
         medtPassWord = (EditText) findViewById(R.id.edtPassWord);
+        mbtnSignup = (Button) findViewById(R.id.btnSignUp);
 
         UserController userController = new UserController(LoginActivity.this);
 //        TextView.OnEditorActionListener listener = new TextView.OnEditorActionListener() {
@@ -71,9 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
                     Toast.makeText(getApplicationContext(), "Welcome back " + medtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("key", medtUserName.getText().toString());
-//                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
                 else {
@@ -83,6 +84,15 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mbtnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

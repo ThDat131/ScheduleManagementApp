@@ -105,6 +105,7 @@ public class CalendarFragment extends Fragment {
                 Date date = calendar.getTime();
 
                 try {
+                    schCtrl = new ScheduleControlller(view.getContext());
                     scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);

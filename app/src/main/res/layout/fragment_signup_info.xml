@@ -9,13 +9,14 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
-        android:paddingTop="4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
         android:background="@drawable/text_shape"
-        android:text="TextView"
-        android:gravity="center" />
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:text="Give us more detail" />
 
     <EditText
         android:id="@+id/editTextFullName"
@@ -45,20 +46,6 @@
         android:hint="Date of Birth"
         android:inputType="textEmailAddress"
         android:focusable="false" />
-
-    <EditText
-        android:id="@+id/editTextCalName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:padding="5dp"
-        android:gravity="center"
-        android:ems="10"
-        android:background="@drawable/rounded_shape"
-        android:hint="Calendar Name"
-        android:inputType="textEmailAddress" />
 
     <Button
         android:id="@+id/buttonFinish"

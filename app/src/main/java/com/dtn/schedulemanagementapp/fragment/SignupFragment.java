@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 
@@ -75,16 +76,25 @@ public class SignupFragment extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new SignupInfoFragment();
-                Bundle bundle = new Bundle();
-                FragmentManager fragManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragTransact = fragManager.beginTransaction();
-                bundle.putString("user",edUsername.getText().toString());
-                bundle.putString("pass",edPassword.getText().toString());
-                bundle.putString("email",edEmail.getText().toString());
-                fragment.setArguments(bundle);
-                fragTransact.replace(R.id.layoutSignup, fragment);
-                fragTransact.commit();
+
+                if (!edUsername.getText().toString().isEmpty() || !edPassword.getText().toString().isEmpty() ||
+                    !edRepass.getText().toString().isEmpty()) {
+                    if (edPassword.getText().toString().equals(edRepass.getText().toString())) {
+                        Fragment fragment = new SignupInfoFragment();
+                        Bundle bundle = new Bundle();
+                        FragmentManager fragManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragTransact = fragManager.beginTransaction();
+                        bundle.putString("user",edUsername.getText().toString());
+                        bundle.putString("pass",edPassword.getText().toString());
+                        bundle.putString("email",edEmail.getText().toString());
+                        fragment.setArguments(bundle);
+                        fragTransact.replace(R.id.layoutSignup, fragment);
+                        fragTransact.commit();
+                    }
+                    else Toast.makeText(v.getContext(), getString(R.string.password_not_match), Toast.LENGTH_LONG).show();
+                } else Toast.makeText(v.getContext(), getString(R.string.input_required), Toast.LENGTH_SHORT).show();
+
+
             }
         });
         return view;
