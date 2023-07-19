@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.preference.PreferenceManager;
@@ -22,6 +23,8 @@ import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.AdminActivity;
 import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
 import com.dtn.schedulemanagementapp.activity.MainActivity;
+import com.dtn.schedulemanagementapp.activity.SoundActivity;
+import com.dtn.schedulemanagementapp.database.DBHelper;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -33,7 +36,7 @@ import java.util.Objects;
  */
 public class ProfileFragment extends Fragment implements Serializable {
 
-    Button btnProfileLogin;
+    Button btnProfileLogin, btnSound;
     ImageView imgProfile;
     TextView tvProfileName;
     Button btnUserInfo;
@@ -46,7 +49,7 @@ public class ProfileFragment extends Fragment implements Serializable {
     private String mParam1;
     private String mParam2;
 
-    private boolean f;
+    private boolean logIn, admin;
 
     public ProfileFragment() {
     }
@@ -75,42 +78,67 @@ public class ProfileFragment extends Fragment implements Serializable {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        btnProfileLogin = (Button) v.findViewById(R.id.btnProfileLogin);
-        tvProfileName = (TextView) v.findViewById(R.id.tvProfileName);
-        btnProfileLogin.setText("login");
-//        Intent intent = getActivity().getIntent();
-//        Bundle bundle = getActivity().getIntent().getExtras();
-//        mbtnProfileLogin.setText((CharSequence) bundle.getSerializable("key"));
 
+        btnProfileLogin = v.findViewById(R.id.btnProfileLogin);
+        tvProfileName = v.findViewById(R.id.tvProfileName);
+        btnSound = v.findViewById(R.id.btnSound);
+        btnUserInfo = v.findViewById(R.id.btnUserInfo);
+        btnAdmin = v.findViewById(R.id.btnAdmin);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileFragment.this.requireActivity());
+
+        DBHelper dbHelper = DBHelper.getInstance(ProfileFragment.this.getContext());
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        f = prefs.getBoolean("logged in", false);
-        if (f) {
+        logIn = prefs.getBoolean("logged in", false);
+        admin = prefs.getBoolean("admin_user", false);
+
+        if (logIn) {
             btnProfileLogin.setText("logout");
             String un = prefs.getString("key_username", "User name");
             tvProfileName.setText(un);
         }
-
+        else
+            btnProfileLogin.setText("login");
+        if(!admin)
+            btnAdmin.setVisibility(View.GONE);
+        else
+            btnAdmin.setVisibility(View.VISIBLE);
         btnProfileLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(btnProfileLogin.getText().toString().equals("login")) {
-                    Intent intent = new Intent(ProfileFragment.this.getActivity(), LoginActivity.class);
-                    startActivity(intent);
+                    Intent intentToLogin = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intentToLogin);
                 }
                 else {
                     editor.clear();
                     editor.apply();
                     btnProfileLogin.setText("login");
+                    tvProfileName.setText("User name");
                     Toast.makeText(getContext(), "See you again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        btnUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                builder.setTitle("User info");
+                String info = prefs.getString("key_username", "");
 
-        btnUserInfo = v.findViewById(R.id.btnUserInfo);
-        btnAdmin = v.findViewById(R.id.btnAdmin);
+                builder.setMessage("Username: " + info + "\nFull name: ");
+                builder.create().show();
+            }
+        });
 
+        btnSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentToSound = new Intent(getActivity(), SoundActivity.class);
+                startActivity(intentToSound);
+            }
+        });
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

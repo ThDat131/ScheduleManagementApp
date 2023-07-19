@@ -1,5 +1,7 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dtn.schedulemanagementapp.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,28 +22,15 @@ import com.dtn.schedulemanagementapp.R;
  */
 public class CategoryFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    FloatingActionButton fbtnAddCate;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public CategoryFragment() {
-        // Required empty public constructor
-    }
+    public CategoryFragment() {}
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CategoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CategoryFragment newInstance(String param1, String param2) {
         CategoryFragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
@@ -57,10 +49,22 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_category, container, false);
+        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        fbtnAddCate = v.findViewById(R.id.btnAddCate);
+
+
+        return v;
+    }
+    public static int generateBeautifulColor() {
+        Random random = new Random();
+
+        int red = 30 + random.nextInt(200);
+        int green = 30 + random.nextInt(200);
+        int blue = 30 + random.nextInt(200);
+        return Color.rgb(red, green, blue);
     }
 }
