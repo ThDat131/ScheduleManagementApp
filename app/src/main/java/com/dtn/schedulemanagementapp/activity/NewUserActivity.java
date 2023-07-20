@@ -73,9 +73,9 @@ public class NewUserActivity extends AppCompatActivity {
         });
 
 
-        Bundle receivedBundle = getIntent().getExtras();
-        if (receivedBundle != null) {
-            User user = receivedBundle.getParcelable("selected_user");
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("selected_user")) {
+            User user = (User) intent.getSerializableExtra("selected_user");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Edit user " + user.getUsername());
             btnAdd.setVisibility(View.GONE);
