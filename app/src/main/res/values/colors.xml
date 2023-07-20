@@ -9,4 +9,7 @@
     <color name="text_shadow">#7F000000</color>
     <color name="text_shadow_white">#FFFFFF</color>
     <color name="yellow">#FFD700</color>
+    <color name="cyan">#58D5FF</color>
+    <color name="light_gray">#a9a9a9</color>
+    <color name="dark_gray">#3f3f3f</color>
 </resources>

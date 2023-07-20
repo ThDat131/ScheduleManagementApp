@@ -16,18 +16,36 @@
             android:name=".activity.SoundActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.NewUserActivity"
+            android:exported="true"
+            android:parentActivityName=".activity.AdminUserActivity"/>
+        <activity
             android:name=".activity.AdminUserActivity"
-            android:exported="false"
+            android:exported="true"
             android:parentActivityName=".activity.AdminActivity" />
         <activity
             android:name=".activity.AdminActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_admin"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.ScheduleManagementApp" />
         <activity
+            android:name=".activity.NewScheduleActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.LoginActivity"
-            android:exported="false" />
+            android:exported="true"/>
+        <activity
+            android:name=".activity.SignupActivity"
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">

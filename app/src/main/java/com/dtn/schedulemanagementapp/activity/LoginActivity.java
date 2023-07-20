@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 
+import java.lang.annotation.Inherited;
+
 public class LoginActivity extends AppCompatActivity {
 
     Button mbtnLogin;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
         DBHelper dbHelper = DBHelper.getInstance(LoginActivity.this);
         mbtnLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 String un = medtUserName.getText().toString();
@@ -68,5 +71,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import com.dtn.schedulemanagementapp.R;
-//import com.dtn.schedulemanagementapp.databinding.ActivityMainBinding;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.fragment.CalendarFragment;
 import com.dtn.schedulemanagementapp.fragment.CategoryFragment;
@@ -62,5 +61,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutMain, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

@@ -72,7 +72,6 @@ public class ProfileFragment extends Fragment implements Serializable {
 
     }
 
-    @SuppressLint({"MissingInflatedId", "SetTextI18n"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,6 +97,8 @@ public class ProfileFragment extends Fragment implements Serializable {
             btnProfileLogin.setText("logout");
             String un = prefs.getString("key_username", "User name");
             tvProfileName.setText(un);
+
+
         }
         else
             btnProfileLogin.setText("login");
@@ -118,6 +119,8 @@ public class ProfileFragment extends Fragment implements Serializable {
                     btnProfileLogin.setText("login");
                     tvProfileName.setText("User name");
                     Toast.makeText(getContext(), "See you again", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
                 }
             }
         });
