@@ -1,6 +1,7 @@
 package com.dtn.schedulemanagementapp.adapter;
 
 import android.content.Context;
+<<<<<<< Updated upstream
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,6 +29,24 @@ import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.Category;
 import com.dtn.schedulemanagementapp.models.User;
 
+=======
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.models.Category;
+import com.dtn.schedulemanagementapp.user_interface.IOnCategoryItemClickListener;
+
+import java.util.ArrayList;
+>>>>>>> Stashed changes
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +56,12 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
 
     Context context;
 
+<<<<<<< Updated upstream
+=======
+    private onRecieveCategoryListener listener;
+
+
+>>>>>>> Stashed changes
     public CategoryAdapter(List<Category> categories, Context context){
         this.categories = categories;
         this.context = context;
@@ -55,6 +80,7 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
         Category category = categories.get(position);
         holder.lblCateName.setText(category.getName());
         category.setColor(generateRandomColor()+"");
+<<<<<<< Updated upstream
 
 //        holder.itemView.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -99,6 +125,9 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
 //                });
 //            }
 //        });
+=======
+        holder.categoryActionDropDownMenu.setOnClickListener(view -> listener.onRecieveCategorySuccess(category, position));
+>>>>>>> Stashed changes
     }
 
 
@@ -106,16 +135,28 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
     public int getItemCount() {
         return categories.size();
     }
+<<<<<<< Updated upstream
+=======
+
+    public void addItem() {
+    }
+
+>>>>>>> Stashed changes
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgCate;
         private TextView lblCateName;
+<<<<<<< Updated upstream
         private ImageButton categoryAction;
+=======
+        private ImageButton categoryActionDropDownMenu;
+>>>>>>> Stashed changes
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCate = itemView.findViewById(R.id.imgCate);
             lblCateName = itemView.findViewById(R.id.lblCateName);
+<<<<<<< Updated upstream
             categoryAction = itemView.findViewById(R.id.categoryAction);
 
             imgCate.setBackgroundColor(generateRandomColor());
@@ -164,6 +205,22 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
             });
         }
     }
+=======
+            categoryActionDropDownMenu = itemView.findViewById(R.id.categoryActionDropDownMenu);
+            imgCate.setBackgroundColor(generateRandomColor());
+        }
+    }
+    public void setData(ArrayList<Category> categories) {
+        this.categories = categories;
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position) {
+        categories.remove(position);
+        notifyItemRemoved(position);
+    }
+
+>>>>>>> Stashed changes
     public static int generateRandomColor() {
         Random random = new Random();
 
@@ -172,4 +229,16 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
         int blue = 30 + random.nextInt(200);
         return Color.rgb(red, green, blue);
     }
+<<<<<<< Updated upstream
+=======
+
+    public void setOnRecieveCategoryListener(onRecieveCategoryListener listener) {
+        this.listener = listener;
+    }
+
+    public interface onRecieveCategoryListener {
+        void onRecieveCategorySuccess(Category category, int pos);
+    }
+
+>>>>>>> Stashed changes
 }

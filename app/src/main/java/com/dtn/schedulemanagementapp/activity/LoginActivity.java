@@ -15,6 +15,11 @@ import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+<<<<<<< Updated upstream
+=======
+import com.dtn.schedulemanagementapp.database.UserController;
+import com.dtn.schedulemanagementapp.models.User;
+>>>>>>> Stashed changes
 
 import java.lang.annotation.Inherited;
 
@@ -27,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         return etText.getText().toString().trim().length() <= 0;
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

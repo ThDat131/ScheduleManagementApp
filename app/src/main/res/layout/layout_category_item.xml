@@ -29,10 +29,18 @@
         android:textSize="30sp" />
 
     <ImageButton
+<<<<<<< Updated upstream
         android:id="@+id/categoryAction"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"
+=======
+        android:id="@+id/categoryActionDropDownMenu"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:backgroundTint="@android:color/transparent"
+>>>>>>> Stashed changes
         android:src="@drawable/baseline_more_vert_24"/>
 
 </LinearLayout>

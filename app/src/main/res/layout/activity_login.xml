@@ -60,8 +60,13 @@
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
+<<<<<<< Updated upstream
             android:singleLine="true"
             android:textColor="@color/grey_font" />
+=======
+            android:textColor="@color/grey_font"
+            android:singleLine="true"/>
+>>>>>>> Stashed changes
 
         <EditText
             android:id="@+id/edtPassWord"
@@ -77,10 +82,15 @@
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
+<<<<<<< Updated upstream
             android:inputType="textPassword"
             android:textColor="@color/grey_font"
             android:singleLine="true"/>
 
+=======
+            android:textColor="@color/grey_font"
+            android:inputType="textPassword"/>
+>>>>>>> Stashed changes
 
         <Button
             android:id="@+id/btnLogin"

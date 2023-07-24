@@ -31,7 +31,16 @@
             android:theme="@style/Theme.ScheduleManagementApp" />
         <activity
             android:name=".activity.NewScheduleActivity"
+<<<<<<< Updated upstream
             android:exported="true" />
+=======
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.SignupActivity"
+            android:exported="true"
+            android:parentActivityName=".activity.LoginActivity" />
+>>>>>>> Stashed changes
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true"/>
@@ -55,6 +64,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< Updated upstream
+=======
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false" />
+>>>>>>> Stashed changes
     </application>
 
 </manifest>
