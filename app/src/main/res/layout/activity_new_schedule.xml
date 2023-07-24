@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:id="@+id/layoutSchedule"
     tools:context=".activity.NewScheduleActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:background="#00aaaaaa"
             android:layout_gravity="right"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageButton
                 android:id="@+id/helpButton"
@@ -92,7 +93,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <LinearLayout
@@ -119,7 +120,8 @@
                 android:background="@drawable/rounded_shape"
                 android:backgroundTint="@color/light_gray"
                 android:ems="10"
-                android:inputType="text"
+                android:inputType="datetime"
+                android:focusable="false"
                 android:padding="5dp" />
         </LinearLayout>
 
@@ -147,14 +149,15 @@
                 android:background="@drawable/rounded_shape"
                 android:backgroundTint="@color/light_gray"
                 android:ems="10"
-                android:inputType="text"
+                android:focusable="false"
+                android:inputType="datetime"
                 android:padding="5dp" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -167,6 +170,12 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:typeface="normal" />
+
+        <LinearLayout
+            android:id="@+id/listAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
 
         <Button
             android:id="@+id/buttonAddAlarm"
@@ -192,7 +201,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:paddingLeft="10dp"
-            android:text="Event name"
+            android:text="Event description"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:typeface="normal" />
@@ -200,13 +209,13 @@
         <EditText
             android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_margin="10dp"
             android:background="@drawable/rounded_shape"
             android:backgroundTint="@color/light_gray"
             android:ems="10"
             android:inputType="text"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:textAlignment="viewStart" />
     </LinearLayout>
-
 </LinearLayout>

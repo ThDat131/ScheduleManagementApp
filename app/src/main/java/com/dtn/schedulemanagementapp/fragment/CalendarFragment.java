@@ -1,7 +1,5 @@
 package com.dtn.schedulemanagementapp.fragment;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,13 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
-import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
-import com.dtn.schedulemanagementapp.database.DBHelper;
-import com.dtn.schedulemanagementapp.database.ScheduleControlller;
+import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
 import java.text.ParseException;
@@ -34,11 +29,8 @@ import java.util.Date;
  */
 public class CalendarFragment extends Fragment {
 
-    private ScheduleControlller schCtrl;
-
-    private CalendarView calendaView;
+    private ScheduleController schCtrl;
     private RecyclerView rcvSchedules;
-
     private CalendarView calendarView;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
@@ -85,8 +77,6 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-
-        scheduleArrayList = new ArrayList<Schedule>();
 
         rcvSchedules = view.findViewById(R.id.rcvSchedules);
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());

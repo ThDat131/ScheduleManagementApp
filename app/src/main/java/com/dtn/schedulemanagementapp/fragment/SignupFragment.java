@@ -83,8 +83,7 @@ public class SignupFragment extends Fragment {
                 bundle.putString("pass",edPassword.getText().toString());
                 bundle.putString("email",edEmail.getText().toString());
                 fragment.setArguments(bundle);
-                fragTransact.replace(R.id.layoutSignup, fragment);
-                fragTransact.commit();
+                fragTransact.replace(R.id.layoutSignup, fragment).commit();
             }
         });
         return view;

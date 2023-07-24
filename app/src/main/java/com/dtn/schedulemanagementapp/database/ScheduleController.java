@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.dtn.schedulemanagementapp.models.Schedule;
+import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,25 +16,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ScheduleControlller {
+public class ScheduleController {
     SQLiteDatabase database;
     DBHelper helper;
 
-    public ScheduleControlller(Context context){
+    public ScheduleController(Context context){
         helper = DBHelper.getInstance(context);
         database = helper.getWritableDatabase();
     }
 
-//    public long addNewUser(Schedule schedule) {
-//        ContentValues values = new ContentValues();
-//        values.put(DBHelper.SCHEDULE_COL_NAME,schedule.getName());
-//        values.put(DBHelper.SCHEDULE_COL_NOTE,schedule.getNote());
-//        values.put(DBHelper.SCHEDULE_COL_START_DATE, schedule.getStartDate().get());
-//        values.put(DBHelper.SCHEDULE_COL_END_DATE,schedule.getEndDate());
-//        values.put(DBHelper.SCHEDULE_COL_CATE_ID,schedule.getCateId());
-//        values.put(DBHelper.SCHEDULE_COL_USERNAME,schedule.getUserId());
-//        return database.insert(DBHelper.TABLE_USER, null, values);
-//    }
+    public long addNewUser(Schedule schedule) {
+        String schStartDate = CalendarUtils.DateToString(schedule.getStartDate(), "yyyy-MM-dd");
+        String schEndDate = CalendarUtils.DateToString(schedule.getEndDate(), "yyyy-MM-dd");
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.SCHEDULE_COL_NAME,schedule.getName());
+        values.put(DBHelper.SCHEDULE_COL_NOTE,schedule.getNote());
+        values.put(DBHelper.SCHEDULE_COL_START_DATE,schStartDate);
+        values.put(DBHelper.SCHEDULE_COL_END_DATE,schEndDate);
+        values.put(DBHelper.SCHEDULE_COL_CATE_ID,schedule.getCateId());
+        values.put(DBHelper.SCHEDULE_COL_USERNAME,schedule.getUserId());
+        return database.insert(DBHelper.TABLE_USER, null, values);
+    }
     public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {
         SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 

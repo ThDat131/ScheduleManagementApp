@@ -21,6 +21,15 @@ public class Schedule {
         this.cateId = cateId;
     }
 
+    public Schedule(String name, String note, Date startDate, Date endDate, String username, int cateId) {
+        this.name = name;
+        this.note = note;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.username = username;
+        this.cateId = cateId;
+    }
+
     public int getId() {
         return id;
     }

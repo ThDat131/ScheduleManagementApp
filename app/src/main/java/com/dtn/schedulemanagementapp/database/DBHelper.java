@@ -27,9 +27,9 @@ public class DBHelper extends SQLiteOpenHelper {
      // Tables name
 
     private static final String TABLE_CATEGORY = "Category";
-    private static final String TABLE_REMINDER = "Reminder";
+    public static final String TABLE_REMINDER = "Reminder";
     public static final String TABLE_SCHEDULE = "Schedule";
-    private static final String TABLE_SOUND = "Sound";
+    public static final String TABLE_SOUND = "Sound";
     public static final String TABLE_USER = "User";
 
     // Category
@@ -41,11 +41,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Reminder
 
-    private static final String REMINDER_COL_ID = "id";
-    private static final String REMINDER_COL_NAME = "name";
-    private static final String REMINDER_COL_TIME_REMIND= "timeRemind";
-    private static final String REMINDER_COL_SCHEDULE_ID = "scheduleId";
-    private static final String REMINDER_COL_SOUND_ID = "soundId";
+    public static final String REMINDER_COL_ID = "id";
+    public static final String REMINDER_COL_NAME = "name";
+    public static final String REMINDER_COL_TIME_REMIND= "timeRemind";
+    public static final String REMINDER_COL_SCHEDULE_ID = "scheduleId";
+    public static final String REMINDER_COL_SOUND_ID = "soundId";
 
     // Schedule
 

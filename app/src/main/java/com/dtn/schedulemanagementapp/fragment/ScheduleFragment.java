@@ -1,14 +1,25 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.NewScheduleActivity;
+import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
+import com.dtn.schedulemanagementapp.database.ScheduleController;
+import com.dtn.schedulemanagementapp.models.Schedule;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +27,12 @@ import com.dtn.schedulemanagementapp.R;
  * create an instance of this fragment.
  */
 public class ScheduleFragment extends Fragment {
+
+    private ScheduleController schCtrl;
+    private RecyclerView rcvSchedules;
+    private Button btnNewSchedule;
+    private ScheduleAdapter scheduleAdapter;
+    private ArrayList<Schedule> scheduleArrayList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +77,28 @@ public class ScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        rcvSchedules = view.findViewById(R.id.rcvSche);
+        scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
+        btnNewSchedule = view.findViewById(R.id.btnAddNewSche);
+
+        rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvSchedules.setAdapter(scheduleAdapter);
+
+        btnNewSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveToNewScheduleActivity();
+            }
+        });
+
+        return view;
+    }
+
+    private void moveToNewScheduleActivity() {
+        Intent i = new Intent(getActivity(), NewScheduleActivity.class);
+        startActivity(i);
+        ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
 }
