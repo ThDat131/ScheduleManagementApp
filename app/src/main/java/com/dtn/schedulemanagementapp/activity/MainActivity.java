@@ -29,9 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        DBHelper dbHelper = DBHelper.getInstance(MainActivity.this);
-        SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+        getSupportActionBar().hide();
 
         botNav = findViewById(R.id.botNav);
 
@@ -69,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
         botNav.setSelectedItemId(R.id.calendar);
         replaceFragment(new CalendarFragment());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Calendar Name Placeholder");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("Calendar Name Placeholder");
 
 //        if (intent != null) {
 //            int frag = intent.getExtras().getInt("frag");

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:top="5dp" android:left="0dp" android:height="25dp" android:width="310dp">
+    <item android:top="5dp" android:left="0dp" android:height="50dp" android:width="310dp">
 
         <shape android:shape="rectangle">
             <solid android:color="@color/yellow">

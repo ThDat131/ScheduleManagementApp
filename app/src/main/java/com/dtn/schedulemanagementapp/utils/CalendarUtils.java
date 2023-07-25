@@ -2,6 +2,7 @@ package com.dtn.schedulemanagementapp.utils;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -27,6 +28,20 @@ public class CalendarUtils {
             Log.d("format", ex.toString());
         }
         return dateString;
+    }
+
+    public static String StringToString(String date, String originalFormat, String newFormat) {
+        String dateString = "";
+        SimpleDateFormat originalDateFormat = new SimpleDateFormat(originalFormat);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat(newFormat);
+        try {
+            Date d = originalDateFormat.parse(date);
+            return newDateFormat.format(d);
+
+        }catch (Exception ex) {
+            Log.d("format", ex.toString());
+        }
+        return null;
     }
 
 

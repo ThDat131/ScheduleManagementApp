@@ -12,6 +12,7 @@ import com.dtn.schedulemanagementapp.R;
 public class AdminActivity extends AppCompatActivity {
 
     Button btnUserM;
+    Button btnCategoryM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class AdminActivity extends AppCompatActivity {
 
 
         btnUserM = findViewById(R.id.btnUserM);
+        btnCategoryM = findViewById(R.id.btnCategoryM);
 
         btnUserM.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,5 +33,19 @@ public class AdminActivity extends AppCompatActivity {
                 startActivity(intentToUser);
             }
         });
+
+        btnCategoryM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToUser = new Intent(AdminActivity.this, AdminCategoriesUser.class);
+                startActivity(intentToUser);
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AdminActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

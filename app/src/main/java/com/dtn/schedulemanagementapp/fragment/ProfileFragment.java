@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,10 @@ import android.widget.Toast;
 import com.dtn.schedulemanagementapp.activity.LoginActivity;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.AdminActivity;
-import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
-import com.dtn.schedulemanagementapp.activity.MainActivity;
+import com.dtn.schedulemanagementapp.database.UserController;
+import com.dtn.schedulemanagementapp.models.User;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +31,7 @@ import java.util.Objects;
  */
 public class ProfileFragment extends Fragment implements Serializable {
 
-    Button btnProfileLogin;
+    Button btnLogout;
     ImageView imgProfile;
     TextView tvProfileName;
     Button btnUserInfo;
@@ -75,9 +73,10 @@ public class ProfileFragment extends Fragment implements Serializable {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        btnProfileLogin = (Button) v.findViewById(R.id.btnProfileLogin);
+        btnLogout = (Button) v.findViewById(R.id.btnLogout);
         tvProfileName = (TextView) v.findViewById(R.id.tvProfileName);
-        btnProfileLogin.setText("login");
+        btnUserInfo = v.findViewById(R.id.btnUserInfo);
+        btnAdmin = v.findViewById(R.id.btnAdmin);
 //        Intent intent = getActivity().getIntent();
 //        Bundle bundle = getActivity().getIntent().getExtras();
 //        mbtnProfileLogin.setText((CharSequence) bundle.getSerializable("key"));
@@ -87,33 +86,22 @@ public class ProfileFragment extends Fragment implements Serializable {
         SharedPreferences.Editor editor = prefs.edit();
         f = prefs.getBoolean("logged in", false);
         if (f) {
-            btnProfileLogin.setText("logout");
             String un = prefs.getString("key_username", "User name");
             tvProfileName.setText(un);
-
-
         }
 
-        btnProfileLogin.setOnClickListener(new View.OnClickListener() {
+        showAdmin(v);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(btnProfileLogin.getText().toString().equals("login")) {
-                    Intent intent = new Intent(ProfileFragment.this.getActivity(), LoginActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    editor.clear();
-                    editor.apply();
-                    btnProfileLogin.setText("login");
-                    Toast.makeText(getContext(), "See you again", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivity(intent);
-                }
+                editor.clear();
+                editor.apply();
+                Toast.makeText(getContext(), "See you again", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
-
-        btnUserInfo = v.findViewById(R.id.btnUserInfo);
-        btnAdmin = v.findViewById(R.id.btnAdmin);
 
         btnAdmin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,5 +113,20 @@ public class ProfileFragment extends Fragment implements Serializable {
             }
         });
         return v;
+    }
+
+    public void showAdmin(View v) {
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
+
+        String username = prefs.getString("key_username", null);
+        UserController userController = new UserController(v.getContext());
+        User currUser = userController.getUserByUsername(username);
+
+        if (currUser.getRole() == 0)
+            btnAdmin.setVisibility(View.GONE);
+        else if (currUser.getRole() == 1)
+            btnAdmin.setVisibility(View.VISIBLE);
+
     }
 }

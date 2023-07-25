@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.UserController;
 import com.dtn.schedulemanagementapp.models.User;
 import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
@@ -72,9 +73,9 @@ public class NewUserActivity extends AppCompatActivity {
         });
 
 
-        Bundle receivedBundle = getIntent().getExtras();
-        if (receivedBundle != null) {
-            User user = receivedBundle.getParcelable("selected_user");
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("selected_user")) {
+            User user = (User) intent.getSerializableExtra("selected_user");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Edit user " + user.getUsername());
             btnAdd.setVisibility(View.GONE);
@@ -172,8 +173,8 @@ public class NewUserActivity extends AppCompatActivity {
         user.setEmail(email);
         user.setRole(role);
 
-        DBHelper dbHelper = DBHelper.getInstance(NewUserActivity.this);
-        if (dbHelper.addUser(user) != 0) {
+        UserController userController = new UserController(NewUserActivity.this);
+        if (userController.addUser(user) != 0) {
             return true;
 
         }
@@ -209,8 +210,8 @@ public class NewUserActivity extends AppCompatActivity {
         user.setEmail(email);
         user.setRole(role);
 
-        DBHelper dbHelper = DBHelper.getInstance(NewUserActivity.this);
-        if (dbHelper.updateUser(user) != 0) {
+        UserController userController = new UserController(NewUserActivity.this);
+        if (userController.updateUser(user) != 0) {
             return true;
         }
         return false;
