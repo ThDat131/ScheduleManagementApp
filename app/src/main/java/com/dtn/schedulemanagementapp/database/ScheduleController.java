@@ -20,20 +20,32 @@ public class ScheduleController {
     SQLiteDatabase database;
     DBHelper helper;
 
-    public ScheduleController(Context context){
+    public ScheduleController(Context context) {
         helper = DBHelper.getInstance(context);
         database = helper.getWritableDatabase();
     }
 
     public long addNewSchedule(Schedule schedule) {
         ContentValues values = new ContentValues();
-        values.put(DBHelper.SCHEDULE_COL_NAME,schedule.getName());
-        values.put(DBHelper.SCHEDULE_COL_NOTE,schedule.getNote());
-        values.put(DBHelper.SCHEDULE_COL_START_DATE,schedule.getStartDate());
-        values.put(DBHelper.SCHEDULE_COL_END_DATE,schedule.getEndDate());
-        values.put(DBHelper.SCHEDULE_COL_CATE_ID,schedule.getCateId());
-        values.put(DBHelper.SCHEDULE_COL_USERNAME,schedule.getUserId());
+        values.put(DBHelper.SCHEDULE_COL_NAME, schedule.getName());
+        values.put(DBHelper.SCHEDULE_COL_NOTE, schedule.getNote());
+        values.put(DBHelper.SCHEDULE_COL_START_DATE, schedule.getStartDate());
+        values.put(DBHelper.SCHEDULE_COL_END_DATE, schedule.getEndDate());
+        values.put(DBHelper.SCHEDULE_COL_CATE_ID, schedule.getCateId());
+        values.put(DBHelper.SCHEDULE_COL_USERNAME, schedule.getUserId());
         return database.insert(DBHelper.TABLE_SCHEDULE, null, values);
+    }
+
+    public long updateSchedule(Schedule schedule) {
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.SCHEDULE_COL_NAME, schedule.getName());
+        values.put(DBHelper.SCHEDULE_COL_NOTE, schedule.getNote());
+        values.put(DBHelper.SCHEDULE_COL_START_DATE, schedule.getStartDate());
+        values.put(DBHelper.SCHEDULE_COL_END_DATE, schedule.getEndDate());
+        values.put(DBHelper.SCHEDULE_COL_CATE_ID, schedule.getCateId());
+        values.put(DBHelper.SCHEDULE_COL_USERNAME, schedule.getUserId());
+        String[] args = {schedule.getId() + ""};
+        return database.update(DBHelper.TABLE_SCHEDULE, values,DBHelper.SCHEDULE_COL_ID, args);
     }
 
     public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {
@@ -50,13 +62,13 @@ public class ScheduleController {
         ArrayList<Schedule> schedules = new ArrayList<Schedule>();
         String query = "SELECT * "
                 + "FROM " + DBHelper.TABLE_SCHEDULE
-                + " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " >= ? AND " + DBHelper.SCHEDULE_COL_END_DATE + " < ?";
+                + " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " >= ? OR " + DBHelper.SCHEDULE_COL_END_DATE + " < ?";
 
         String[] args = {dateStringStart, dateStringEnd};
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, args);
 
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String note = cursor.getString(2);
@@ -71,4 +83,25 @@ public class ScheduleController {
         return schedules;
     }
 
+    public Schedule getScheduleByScheduleID(int scheduleID) throws ParseException {
+        String query = "SELECT * "
+                + "FROM " + DBHelper.TABLE_SCHEDULE
+                + " WHERE " + DBHelper.SCHEDULE_COL_ID + " >= ?";
+
+        String[] args = {scheduleID + ""};
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, args);
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String note = cursor.getString(2);
+            String startDate = cursor.getString(3);
+            String endDate = cursor.getString(4);
+            int cateId = cursor.getInt(5);
+            String username = cursor.getString(6);
+            return new Schedule(id, name, note, startDate, endDate, username, cateId);
+        }
+        return null;
+    }
 }

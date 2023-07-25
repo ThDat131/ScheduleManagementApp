@@ -1,6 +1,8 @@
 package com.dtn.schedulemanagementapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.NewScheduleActivity;
+import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Schedule;
+import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,9 +53,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Schedule schedule = scheduleArrayList.get(position);
+        ScheduleController sCtrl = new ScheduleController(this.context);
         holder.lblScheduleName.setText(schedule.getName());
         holder.lblScheduleStartDate.setText(schedule.getStartDate());
         holder.lblScheduleEndDate.setText(schedule.getEndDate());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, NewScheduleActivity.class);
+                i.putExtra("ScheduleID", schedule.getId());
+                context.startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -72,5 +87,4 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             lblScheduleEndDate = itemView.findViewById(R.id.lblScheduleEndDate);
         }
     }
-
 }

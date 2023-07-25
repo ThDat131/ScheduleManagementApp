@@ -20,8 +20,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.database.ReminderController;
 import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Reminder;
@@ -211,7 +213,9 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
                     editTextEvName.setEnabled(false);
                     spinCates.setEnabled(false);
                     editTextStartDate.setEnabled(false);
+                    editTextStartTime.setEnabled(false);
                     editTextEndDate.setEnabled(false);
+                    editTextEndTime.setEnabled(false);
                     btnAddAlarm.setEnabled(false);
                     editTextDescription.setEnabled(false);
 
@@ -220,7 +224,9 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
                     editTextEvName.setEnabled(true);
                     spinCates.setEnabled(true);
                     editTextStartDate.setEnabled(true);
+                    editTextStartTime.setEnabled(true);
                     editTextEndDate.setEnabled(true);
+                    editTextEndTime.setEnabled(true);
                     btnAddAlarm.setEnabled(true);
                     editTextDescription.setEnabled(true);
                 }
@@ -233,11 +239,59 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
             throw new RuntimeException(e);
         }
 
+        Intent i = getIntent();
+        int check = i.getIntExtra("ScheduleID",0);
+        if(check!=0) {
+            try {
+                Schedule scheduleEdit = sCtrl.getScheduleByScheduleID(check);
+                buttonHelp.setImageResource(R.drawable.baseline_check_24);
+                editTextEvName.setEnabled(true);
+                editTextEvName.setText(scheduleEdit.getName());
+                spinCates.setEnabled(true);
+                editTextStartDate.setEnabled(true);
+                editTextStartDate.setText(scheduleEdit.getStartDate().substring(0, 10));
+                editTextStartTime.setEnabled(true);
+                editTextStartTime.setText(scheduleEdit.getStartDate().substring(11, 19));
+                editTextEndDate.setEnabled(true);
+                editTextEndDate.setText(scheduleEdit.getEndDate().substring(0, 10));
+                editTextEndTime.setEnabled(true);
+                editTextEndTime.setText(scheduleEdit.getEndDate().substring(11, 19));
+                btnAddAlarm.setEnabled(true);
+                fetchAlarms();
+                editTextDescription.setEnabled(true);
+                editTextDescription.setText(scheduleEdit.getNote());
+                buttonHelp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String start = editTextStartDate.getText().toString() + " " + editTextStartTime.getText().toString() + ":00";
+                        String end = editTextEndDate.getText().toString() + " " + editTextEndTime.getText().toString() + ":00";
+                        Schedule scheduleEdited = new Schedule(editTextEvName.getText().toString(),
+                                editTextDescription.getText().toString(),
+                                start,
+                                end,
+//                        getIntent().getExtras().getString("username","admin"),
+                                "admin",
+                                spinCates.getId());
+                        sCtrl.updateSchedule(scheduleEdited);
+                    }
+                });
+            } catch (ParseException e) {
+                Toast.makeText(this,"Welp!",Toast.LENGTH_LONG);
+            }
+        }
+        else {
+
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        fetchAlarms();
+    }
+
+    private void fetchAlarms(){
         for (int i = 0; i < alarms.size(); i++) {
             EditText myEditText = new EditText(this); // Pass it an Activity or Context
             myEditText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
