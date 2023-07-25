@@ -25,7 +25,7 @@ public class ScheduleController {
         database = helper.getWritableDatabase();
     }
 
-    public long addNewUser(Schedule schedule) {
+    public long addNewSchedule(Schedule schedule) {
         String schStartDate = CalendarUtils.DateToString(schedule.getStartDate(), "yyyy-MM-dd");
         String schEndDate = CalendarUtils.DateToString(schedule.getEndDate(), "yyyy-MM-dd");
         ContentValues values = new ContentValues();
@@ -35,8 +35,9 @@ public class ScheduleController {
         values.put(DBHelper.SCHEDULE_COL_END_DATE,schEndDate);
         values.put(DBHelper.SCHEDULE_COL_CATE_ID,schedule.getCateId());
         values.put(DBHelper.SCHEDULE_COL_USERNAME,schedule.getUserId());
-        return database.insert(DBHelper.TABLE_USER, null, values);
+        return database.insert(DBHelper.TABLE_SCHEDULE, null, values);
     }
+
     public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {
         SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 

@@ -4,7 +4,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -22,8 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.ReminderController;
@@ -157,8 +154,14 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
         buttonHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                schedule = new Schedule(editTextEvName.getText().toString(), editTextDescription.getText().toString(), CalendarUtils.StringToDate(editTextStartDate.getText().toString(),"yyyy-MM-dd"), CalendarUtils.StringToDate(editTextEndDate.getText().toString(),"yyyy-MM-dd"), getIntent().getExtras().getString("username","admin"), spinCates.getId());
-                sCtrl.addNewUser(schedule);
+                schedule = new Schedule(editTextEvName.getText().toString(),
+                        editTextDescription.getText().toString(),
+                        CalendarUtils.StringToDate(editTextStartDate.getText().toString(),"dd/MM/yyyy"),
+                        CalendarUtils.StringToDate(editTextEndDate.getText().toString(),"dd/MM/yyyy"),
+//                        getIntent().getExtras().getString("username","admin"),
+                        "admin",
+                        spinCates.getId());
+                sCtrl.addNewSchedule(schedule);
                 if (spinCates.isEnabled()==true) {
                     buttonHelp.setImageResource(R.drawable.pen_solid);
                     editTextEvName.setEnabled(false);
@@ -206,7 +209,7 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(getApplicationContext(), cates[i], Toast.LENGTH_LONG).show();
+
     }
 
     @Override

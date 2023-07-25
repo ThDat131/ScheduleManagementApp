@@ -19,7 +19,9 @@ import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,26 +81,29 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        schCtrl = new ScheduleController(getContext());
         rcvSchedules = view.findViewById(R.id.rcvSche);
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
         btnNewSchedule = view.findViewById(R.id.btnAddNewSche);
 
         rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
+        Date date = new Date();
+        try {
+            scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         rcvSchedules.setAdapter(scheduleAdapter);
 
         btnNewSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moveToNewScheduleActivity();
+                Intent i = new Intent(getActivity(), NewScheduleActivity.class);
+                startActivity(i);
+                ((Activity) getActivity()).overridePendingTransition(0, 0);
             }
         });
 
         return view;
-    }
-
-    private void moveToNewScheduleActivity() {
-        Intent i = new Intent(getActivity(), NewScheduleActivity.class);
-        startActivity(i);
-        ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
 }
