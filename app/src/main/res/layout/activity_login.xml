@@ -49,7 +49,7 @@
         <EditText
             android:id="@+id/edtUserName"
             android:layout_width="230dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/login_round_edt"
@@ -60,23 +60,26 @@
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
+            android:singleLine="true"
             android:text="thdat"
             android:textColor="@color/grey_font" />
 
         <EditText
             android:id="@+id/edtPassWord"
             android:layout_width="230dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:background="@drawable/login_round_edt"
             android:gravity="center"
             android:hint="password"
+            android:inputType="textPassword"
             android:padding="5dip"
             android:shadowColor="@color/text_shadow_white"
             android:shadowDx="-2"
             android:shadowDy="-2"
             android:shadowRadius="1"
+            android:singleLine="true"
             android:text="123"
             android:textColor="@color/grey_font" />
 
