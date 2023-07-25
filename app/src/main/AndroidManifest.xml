@@ -13,50 +13,35 @@
         android:theme="@style/Theme.ScheduleManagementApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.SoundActivity"
+            android:name=".activity.ChangeUserInfo"
+            android:exported="true" />
+        <activity
+            android:name=".activity.AdminCategoriesUser"
             android:exported="false" />
         <activity
             android:name=".activity.NewUserActivity"
-            android:exported="true"
-            android:parentActivityName=".activity.AdminUserActivity"/>
+            android:exported="false"
+            android:parentActivityName=".activity.AdminUserActivity" />
         <activity
             android:name=".activity.AdminUserActivity"
-            android:exported="true"
+            android:exported="false"
             android:parentActivityName=".activity.AdminActivity" />
         <activity
             android:name=".activity.AdminActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_admin"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.ScheduleManagementApp" />
         <activity
             android:name=".activity.NewScheduleActivity"
-<<<<<<< Updated upstream
-            android:exported="true" />
-=======
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SignupActivity"
             android:exported="true"
             android:parentActivityName=".activity.LoginActivity" />
->>>>>>> Stashed changes
         <activity
             android:name=".activity.LoginActivity"
-            android:exported="true"/>
-        <activity
-            android:name=".activity.SignupActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,12 +49,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< Updated upstream
-=======
         <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
->>>>>>> Stashed changes
     </application>
 
 </manifest>

@@ -1,14 +1,9 @@
 package com.dtn.schedulemanagementapp.fragment;
 
-<<<<<<< Updated upstream
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-=======
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
->>>>>>> Stashed changes
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -27,17 +22,6 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
-<<<<<<< Updated upstream
-import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
-import com.dtn.schedulemanagementapp.adapter.CategoryAdapter;
-import com.dtn.schedulemanagementapp.adapter.UserAdapter;
-import com.dtn.schedulemanagementapp.database.DBHelper;
-import com.dtn.schedulemanagementapp.models.Category;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
-import java.util.Random;
-=======
 import com.dtn.schedulemanagementapp.adapter.CategoryAdapter;
 import com.dtn.schedulemanagementapp.database.CategoryController;
 import com.dtn.schedulemanagementapp.database.UserController;
@@ -46,25 +30,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
->>>>>>> Stashed changes
 
 public class CategoryFragment extends Fragment {
 
     FloatingActionButton fbtnAddCate;
-<<<<<<< Updated upstream
-
-    RecyclerView recyclerViewCatogories;
-
-
-    public CategoryFragment() {}
-
-=======
 
     RecyclerView recyclerViewCatogories;
 
     CategoryController categoryController;
-
-    UserController userController;
     CategoryAdapter categoryAdapter;
     List<Category> categories = new ArrayList<>();
 
@@ -74,7 +47,6 @@ public class CategoryFragment extends Fragment {
     public CategoryFragment() {
     }
 
->>>>>>> Stashed changes
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,37 +57,27 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_category, container, false);
-<<<<<<< Updated upstream
-        List<Category> categories = DBHelper.getInstance(this.getContext()).getAllCategories();
-        Log.d("TEST", categories.size()+"");
-        categories.forEach(c -> Log.d("HELLO", c.toString()));
-        recyclerViewCatogories = v.findViewById(R.id.recyclerViewCatogories);
-        CategoryAdapter adapter = new CategoryAdapter(categories, this.getContext());
-        adapter.notifyDataSetChanged();
-        recyclerViewCatogories.setAdapter(adapter);
-        recyclerViewCatogories.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        return v;
-=======
 
         recyclerViewCatogories = v.findViewById(R.id.recyclerViewCatogories);
         fbtnAddCate = v.findViewById(R.id.btnAddCate);
 
         categoryController = new CategoryController(v.getContext());
-        userController = new UserController(v.getContext());
 
-        categories = categoryController.getAllCategories();
-        Log.d("CATEGORIS ", categories.size() + "");
+        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userName = prefs.getString("key_username", "User name");
+        categories = categoryController.getAllCategories(userName);
 
         categoryAdapter = new CategoryAdapter(categories, this.getContext());
 
         recyclerViewCatogories.setAdapter(categoryAdapter);
         recyclerViewCatogories.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
+
 
         categoryAdapter.setOnRecieveCategoryListener((category, pos) -> {
             this.pos = pos;
             RecyclerView.ViewHolder viewHolder =  recyclerViewCatogories.findViewHolderForAdapterPosition(pos);
+            assert viewHolder != null;
             showPopup(viewHolder.itemView, category);
         });
 
@@ -130,7 +92,6 @@ public class CategoryFragment extends Fragment {
                     .setPositiveButton("OK", (dialogInterface, i) -> {
                         Category category = new Category();
                         category.setName(newName.getText().toString().trim());
-                        String userName = prefs.getString("key_username", "User name");
                         category.setUsername(userName);
                         categoryController.addCategory(category);
                         categoryAdapter.notifyDataSetChanged();
@@ -158,7 +119,7 @@ public class CategoryFragment extends Fragment {
                             .setPositiveButton("OK", (dialog, which) -> {
                                 category.setName(taskEditText.getText().toString().trim());
                                 if(categoryController.updateCategory(category)) {
-                                    categoryAdapter.notifyDataSetChanged();
+                                    categoryAdapter.setData(categories);
                                     Toast.makeText(view.getContext(), "Update success", Toast.LENGTH_SHORT).show();
                                 }
                                 else Toast.makeText(view.getContext(), "Something has wrong", Toast.LENGTH_SHORT).show();
@@ -199,7 +160,5 @@ public class CategoryFragment extends Fragment {
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.user_menu, popupMenu.getMenu());
         popupMenu.show();
->>>>>>> Stashed changes
     }
-
 }

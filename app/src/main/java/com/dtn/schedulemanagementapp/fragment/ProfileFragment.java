@@ -2,7 +2,6 @@ package com.dtn.schedulemanagementapp.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,21 +9,25 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.dtn.schedulemanagementapp.activity.LoginActivity;
+
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.AdminActivity;
 import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
-import com.dtn.schedulemanagementapp.activity.MainActivity;
+import com.dtn.schedulemanagementapp.activity.ChangeUserInfo;
+import com.dtn.schedulemanagementapp.activity.LoginActivity;
 import com.dtn.schedulemanagementapp.activity.SoundActivity;
 import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.UserController;
+import com.dtn.schedulemanagementapp.models.User;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -84,6 +87,8 @@ public class ProfileFragment extends Fragment implements Serializable {
         btnUserInfo = v.findViewById(R.id.btnUserInfo);
         btnAdmin = v.findViewById(R.id.btnAdmin);
 
+        UserController userController = new UserController(getContext());
+
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileFragment.this.requireActivity());
 
         DBHelper dbHelper = DBHelper.getInstance(ProfileFragment.this.getContext());
@@ -92,10 +97,10 @@ public class ProfileFragment extends Fragment implements Serializable {
         SharedPreferences.Editor editor = prefs.edit();
         logIn = prefs.getBoolean("logged in", false);
         admin = prefs.getBoolean("admin_user", false);
+        String un = prefs.getString("key_username", "User name");
 
         if (logIn) {
             btnProfileLogin.setText("logout");
-            String un = prefs.getString("key_username", "User name");
             tvProfileName.setText(un);
 
 
@@ -128,9 +133,34 @@ public class ProfileFragment extends Fragment implements Serializable {
             @Override
             public void onClick(View view) {
                 builder.setTitle("User info");
-                String info = prefs.getString("key_username", "");
 
-                builder.setMessage("Username: " + info + "\nFull name: ");
+                User user = userController.getUserByUsername(un);
+                String fullname = user.getFullName();
+                String birthday = user.getBirthDate().toString();
+                String email = user.getEmail();
+
+                builder.setMessage("Username: " + un +
+                        "\nFull name: " + fullname +
+                        "\nBirthday: " + birthday +
+                        "\nEmail: " + email);
+                builder.setPositiveButton("Change info", (dialogInterface, i) -> {
+                    AlertDialog.Builder confirmPassword = new AlertDialog.Builder(ProfileFragment.this.requireActivity());
+                    EditText pass = new EditText(getContext());
+                    pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    confirmPassword.setTitle("Confirm password")
+                            .setView(pass)
+                            .setPositiveButton("Enter", (dialogInterface1, i1) -> {
+                                if(user.getPassword().equals(pass.getText().toString())){
+                                    Toast.makeText(getContext(), "Password correct", Toast.LENGTH_SHORT).show();
+                                    Intent intentToChangeInfo = new Intent(getContext(), ChangeUserInfo.class);
+                                    startActivity(intentToChangeInfo);
+                                }else
+                                    Toast.makeText(getContext(), "Password incorrect", Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("Cancel", null);
+                    confirmPassword.create().show();
+                });
+                builder.setNegativeButton("OK", null);
                 builder.create().show();
             }
         });

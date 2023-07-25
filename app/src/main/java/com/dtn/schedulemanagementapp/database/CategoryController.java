@@ -1,13 +1,20 @@
 package com.dtn.schedulemanagementapp.database;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.models.Category;
+import com.dtn.schedulemanagementapp.models.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CategoryController {
@@ -19,17 +26,28 @@ public class CategoryController {
         database = helper.getWritableDatabase();
     }
 
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories(String username) {
         List<Category> categories = new ArrayList<>();
-        Cursor c = database.rawQuery("Select * from " + helper.TABLE_CATEGORY, null);
-        while (c.moveToNext()){
-            Category category = new Category();
-            category.setId(c.getInt(0));
-            category.setName(c.getString(1));
-            category.setUsername(c.getString(3));
-            category.setColor(c.getString(2));
-            categories.add(category);
+        Cursor c = null;
+        String[] args = {username};
+        try {
+            if (username.equals("admin"))
+                c = database.rawQuery("Select * from " + DBHelper.TABLE_CATEGORY, null);
+            else {
+                c = database.rawQuery("Select * from " + DBHelper.TABLE_CATEGORY + " where " +
+                        DBHelper.CATEGORY_COL_USERNAME + " = ?", args);
+            }
+        } catch(Exception ex){
         }
+        if(c !=null)
+            while (c.moveToNext()){
+                Category category = new Category();
+                category.setId(c.getInt(0));
+                category.setName(c.getString(1));
+                category.setUsername(c.getString(3));
+                category.setColor(c.getString(2));
+                categories.add(category);
+            }
         return categories;
     }
 
