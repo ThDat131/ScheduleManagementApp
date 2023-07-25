@@ -65,7 +65,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         else if (user.getRole() == 0)
             holder.imgRole.setImageResource(R.drawable.user_solid);
 
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

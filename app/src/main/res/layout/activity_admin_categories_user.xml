@@ -30,14 +30,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <Button
-            android:id="@+id/btnAddNewUser"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/circle_plus_solid"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:text="" />
     </RelativeLayout>
 
 </LinearLayout>
