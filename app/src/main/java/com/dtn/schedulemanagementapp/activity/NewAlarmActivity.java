@@ -54,14 +54,14 @@ public class NewAlarmActivity extends AppCompatActivity implements AdapterView.O
                 int hour = calendar.get(Calendar.HOUR_OF_DAY);
                 int min = calendar.get(Calendar.MINUTE);
 
-                TimePickerDialog datePickerDialog = new TimePickerDialog(NewAlarmActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(NewAlarmActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hour, int min) {
                             Time time = Time.valueOf(hour+":"+min);
                             edtAlarmTime.setText("HH:mm");
                     }
             }, hour, min, true);
-                datePickerDialog.show();
+                timePickerDialog.show();
             }
         });
     }

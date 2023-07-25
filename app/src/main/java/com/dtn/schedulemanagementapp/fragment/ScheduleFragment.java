@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
 import com.dtn.schedulemanagementapp.activity.NewScheduleActivity;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
+import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Schedule;
 
@@ -81,20 +83,20 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        Date date = new Date();
         schCtrl = new ScheduleController(getContext());
         rcvSchedules = view.findViewById(R.id.rcvSche);
-        scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
-        btnNewSchedule = view.findViewById(R.id.btnAddNewSche);
-
-        rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
-        Date date = new Date();
         try {
-            scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
+            scheduleArrayList = schCtrl.getScheduleByDate(date);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
+
+        scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
+        rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvSchedules.setAdapter(scheduleAdapter);
 
+        btnNewSchedule = view.findViewById(R.id.btnAddNewSche);
         btnNewSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

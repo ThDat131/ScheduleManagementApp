@@ -51,8 +51,6 @@ public class AdminUserActivity extends AppCompatActivity {
         rcvUser.setLayoutManager(new LinearLayoutManager(AdminUserActivity.this));
         rcvUser.setAdapter(userAdapter);
 
-
-
         btnAddNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

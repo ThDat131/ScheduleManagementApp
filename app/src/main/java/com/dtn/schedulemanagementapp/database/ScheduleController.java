@@ -26,13 +26,11 @@ public class ScheduleController {
     }
 
     public long addNewSchedule(Schedule schedule) {
-        String schStartDate = CalendarUtils.DateToString(schedule.getStartDate(), "yyyy-MM-dd");
-        String schEndDate = CalendarUtils.DateToString(schedule.getEndDate(), "yyyy-MM-dd");
         ContentValues values = new ContentValues();
         values.put(DBHelper.SCHEDULE_COL_NAME,schedule.getName());
         values.put(DBHelper.SCHEDULE_COL_NOTE,schedule.getNote());
-        values.put(DBHelper.SCHEDULE_COL_START_DATE,schStartDate);
-        values.put(DBHelper.SCHEDULE_COL_END_DATE,schEndDate);
+        values.put(DBHelper.SCHEDULE_COL_START_DATE,schedule.getStartDate());
+        values.put(DBHelper.SCHEDULE_COL_END_DATE,schedule.getEndDate());
         values.put(DBHelper.SCHEDULE_COL_CATE_ID,schedule.getCateId());
         values.put(DBHelper.SCHEDULE_COL_USERNAME,schedule.getUserId());
         return database.insert(DBHelper.TABLE_SCHEDULE, null, values);
@@ -62,8 +60,8 @@ public class ScheduleController {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String note = cursor.getString(2);
-            Date startDate = dateSimple.parse(cursor.getString(3));
-            Date endDate = dateSimple.parse(cursor.getString(4));
+            String startDate = cursor.getString(3);
+            String endDate = cursor.getString(4);
             int cateId = cursor.getInt(5);
             String username = cursor.getString(6);
 

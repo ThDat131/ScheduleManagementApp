@@ -5,10 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TimePicker;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.ReminderController;
@@ -29,7 +28,10 @@ import com.dtn.schedulemanagementapp.models.Reminder;
 import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
+import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -65,20 +67,12 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
         spinCates.setAdapter(ad);
 
         Button btnAddAlarm = findViewById(R.id.buttonAddAlarm);
-        btnAddAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog fbDialogue = new Dialog(NewScheduleActivity.this, android.R.style.Theme_Black_NoTitleBar);
-                fbDialogue.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(80, 0, 0, 0)));
-                fbDialogue.setContentView(R.layout.fragment_add_alarm);
-                fbDialogue.setCancelable(true);
-                fbDialogue.show();
-            }
-        });
 
         EditText editTextEvName = findViewById(R.id.editTextEvName);
         EditText editTextStartDate = findViewById(R.id.editTextStartDate);
+        EditText editTextStartTime = findViewById(R.id.editTextStartTime);
         EditText editTextEndDate = findViewById(R.id.editTextEndDate);
+        EditText editTextEndTime = findViewById(R.id.editTextEndTime);
         EditText editTextDescription = findViewById(R.id.editTextDescription);
         ImageButton buttonHelp = findViewById(R.id.helpButton);
 
@@ -135,6 +129,54 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
+        editTextStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DateFormat formatter = new SimpleDateFormat("HH:mm");
+                Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int min = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(NewScheduleActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                        Time time = null;
+                        try {
+                            time = new Time(formatter.parse(hour+":"+min).getTime());
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                        editTextStartTime.setText(time.toString().substring(0,5));
+                    }
+                }, hour, min, true);
+                timePickerDialog.show();
+            }
+        });
+
+        editTextEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DateFormat formatter = new SimpleDateFormat("HH:mm");
+                Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int min = calendar.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(NewScheduleActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                        Time time = null;
+                        try {
+                            time = new Time(formatter.parse(hour+":"+min).getTime());
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                        editTextEndTime.setText(time.toString().substring(0,5));
+                    }
+                }, hour, min, true);
+                timePickerDialog.show();
+            }
+        });
+
         btnAddAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,10 +196,12 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
         buttonHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String start = editTextStartDate.getText().toString() + " " + editTextStartTime.getText().toString() + ":00";
+                String end = editTextEndDate.getText().toString() + " " + editTextEndTime.getText().toString() + ":00";
                 schedule = new Schedule(editTextEvName.getText().toString(),
                         editTextDescription.getText().toString(),
-                        CalendarUtils.StringToDate(editTextStartDate.getText().toString(),"dd/MM/yyyy"),
-                        CalendarUtils.StringToDate(editTextEndDate.getText().toString(),"dd/MM/yyyy"),
+                        start,
+                        end,
 //                        getIntent().getExtras().getString("username","admin"),
                         "admin",
                         spinCates.getId());
