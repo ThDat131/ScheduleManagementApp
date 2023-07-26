@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
@@ -89,7 +90,7 @@ public class ScheduleFragment extends Fragment {
         try {
             scheduleArrayList = schCtrl.getScheduleByDate(date);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            Toast.makeText(getContext(),"No schedule", Toast.LENGTH_SHORT);
         }
 
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());

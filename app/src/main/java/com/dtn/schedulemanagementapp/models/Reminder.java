@@ -5,16 +5,28 @@ import java.util.Date;
 public class Reminder {
     private int id;
     private String nameRemind;
-    private Date timeRemind;
+    private String timeRemind;
     private int scheduleId;
     private int soundId;
 
-    public Reminder(int id, String nameRemind, Date timeRemind, int scheduleId, int soundId) {
+    public Reminder(int id, String nameRemind, String timeRemind, int scheduleId, int soundId) {
         this.id = id;
         this.nameRemind = nameRemind;
         this.timeRemind = timeRemind;
         this.scheduleId = scheduleId;
         this.soundId = soundId;
+    }
+
+    public Reminder(String nameRemind, String timeRemind, int scheduleId, int soundId) {
+        this.nameRemind = nameRemind;
+        this.timeRemind = timeRemind;
+        this.scheduleId = scheduleId;
+        this.soundId = soundId;
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + nameRemind;
     }
 
     public int getId() {
@@ -33,11 +45,11 @@ public class Reminder {
         this.nameRemind = nameRemind;
     }
 
-    public Date getTimeRemind() {
+    public String getTimeRemind() {
         return timeRemind;
     }
 
-    public void setTimeRemind(Date timeRemind) {
+    public void setTimeRemind(String timeRemind) {
         this.timeRemind = timeRemind;
     }
 

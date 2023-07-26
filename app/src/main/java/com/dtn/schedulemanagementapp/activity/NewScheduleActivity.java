@@ -6,10 +6,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -69,7 +74,6 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
         spinCates.setAdapter(ad);
 
         Button btnAddAlarm = findViewById(R.id.buttonAddAlarm);
-
         EditText editTextEvName = findViewById(R.id.editTextEvName);
         EditText editTextStartDate = findViewById(R.id.editTextStartDate);
         EditText editTextStartTime = findViewById(R.id.editTextStartTime);
@@ -198,8 +202,8 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
         buttonHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String start = editTextStartDate.getText().toString() + " " + editTextStartTime.getText().toString() + ":00";
-                String end = editTextEndDate.getText().toString() + " " + editTextEndTime.getText().toString() + ":00";
+                String start = CalendarUtils.StringToString(editTextStartDate.getText().toString() + " " + editTextStartTime.getText().toString() + ":00", "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
+                String end = CalendarUtils.StringToString(editTextEndDate.getText().toString() + " " + editTextEndTime.getText().toString() + ":00", "dd/MM/yyyy HH:mm:ss", "yyyy-MM-dd HH:mm:ss");
                 schedule = new Schedule(editTextEvName.getText().toString(),
                         editTextDescription.getText().toString(),
                         start,
@@ -233,38 +237,35 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-        try {
-            alarms = rCtrl.getReminderByScheduleID(thisLayout.getId());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
         Intent i = getIntent();
         int check = i.getIntExtra("ScheduleID",0);
         if(check!=0) {
             try {
                 Schedule scheduleEdit = sCtrl.getScheduleByScheduleID(check);
                 buttonHelp.setImageResource(R.drawable.baseline_check_24);
+                String start = CalendarUtils.StringToString(scheduleEdit.getStartDate(), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm:ss");
+                String end = CalendarUtils.StringToString(scheduleEdit.getEndDate(), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm:ss");
                 editTextEvName.setEnabled(true);
                 editTextEvName.setText(scheduleEdit.getName());
                 spinCates.setEnabled(true);
                 editTextStartDate.setEnabled(true);
-                editTextStartDate.setText(scheduleEdit.getStartDate().substring(0, 10));
+                editTextStartDate.setText(start.substring(0, 10));
                 editTextStartTime.setEnabled(true);
-                editTextStartTime.setText(scheduleEdit.getStartDate().substring(11, 19));
+                editTextStartTime.setText(start.substring(11, 16));
                 editTextEndDate.setEnabled(true);
                 editTextEndDate.setText(scheduleEdit.getEndDate().substring(0, 10));
                 editTextEndTime.setEnabled(true);
-                editTextEndTime.setText(scheduleEdit.getEndDate().substring(11, 19));
+                editTextEndTime.setText(scheduleEdit.getEndDate().substring(11, 16));
                 btnAddAlarm.setEnabled(true);
                 fetchAlarms();
                 editTextDescription.setEnabled(true);
                 editTextDescription.setText(scheduleEdit.getNote());
+                alarms = rCtrl.getReminderByScheduleID(check);
                 buttonHelp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String start = editTextStartDate.getText().toString() + " " + editTextStartTime.getText().toString() + ":00";
-                        String end = editTextEndDate.getText().toString() + " " + editTextEndTime.getText().toString() + ":00";
+                        String start = CalendarUtils.StringToDate(editTextStartDate.getText().toString(), "yyyy-MM-dd") + " " + editTextStartTime.getText().toString() + ":00";
+                        String end = CalendarUtils.StringToDate(editTextEndDate.getText().toString(), "yyyy-MM-dd") + " " + editTextEndTime.getText().toString() + ":00";
                         Schedule scheduleEdited = new Schedule(editTextEvName.getText().toString(),
                                 editTextDescription.getText().toString(),
                                 start,
@@ -293,16 +294,34 @@ public class NewScheduleActivity extends AppCompatActivity implements AdapterVie
 
     private void fetchAlarms(){
         for (int i = 0; i < alarms.size(); i++) {
-            EditText myEditText = new EditText(this); // Pass it an Activity or Context
-            myEditText.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            myEditText.setFocusable(false);
-            myEditText.setOnClickListener(new View.OnClickListener() {
+            TextView alarmText = new TextView(this);
+            Switch alarmSwitch = new Switch(this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(convertPixelsToDp(50,this),0,convertPixelsToDp(50,this),0);
+            alarmText.setLayoutParams(params);
+            alarmSwitch.setLayoutParams(params);
+            alarmSwitch.setChecked(true);
+            alarmText.setFocusable(false);
+            alarmText.setText(alarms.get(i).toString());
+            int finalI = i;
+            alarmText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int alarmID = alarms.get(finalI).getId();
+                    Intent i = new Intent(NewScheduleActivity.this, NewAlarmActivity.class);
+                    i.putExtra("AlarmID", alarmID );
+                    startActivity(i);
                 }
             });
-            thisLayout.addView(myEditText);
+            thisLayout.addView(alarmText);
         }
+    }
+
+    public static int convertPixelsToDp(float px, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        int dp = (int) (px / (metrics.densityDpi / 160f));
+        return dp;
     }
 
     @Override

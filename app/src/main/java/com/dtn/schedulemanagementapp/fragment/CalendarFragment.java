@@ -95,24 +95,13 @@ public class CalendarFragment extends Fragment {
                 Date date = calendar.getTime();
 
                 try {
-                    schCtrl = new ScheduleControlller(view.getContext());
+                    schCtrl = new ScheduleController(view.getContext());
                     scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
                 }
             }
         });
-
-//        calendaView = view.findViewById(R.id.calendarView);
-//        calendaView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                intent.putExtra("frag",R.id.category);
-//                startActivity(intent);
-//                ((Activity) getActivity()).overridePendingTransition(0, 0);
-//            }
-//        });
 
         return view;
     }
