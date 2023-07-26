@@ -1,5 +1,7 @@
 package com.dtn.schedulemanagementapp.models;
 
+import androidx.annotation.NonNull;
+
 public class Category {
     private int id;
     private String name;
@@ -14,6 +16,12 @@ public class Category {
         this.name = name;
         this.color = color;
         this.username = username;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return id + " - " + name;
     }
 
     public int getId() {

@@ -21,6 +21,14 @@
             android:name=".activity.NewAlarmActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.NewAlarmActivity"
+            android:exported="false" 
+            android:parentActivityName=".activity.NewScheduleActivity" />
+        <activity
+            android:name=".activity.AdminCategoriesUser"
+            android:exported="false"
+            android:parentActivityName=".activity.AdminActivity"/>
+        <activity
             android:name=".activity.NewUserActivity"
             android:exported="false"
             android:parentActivityName=".activity.AdminUserActivity" />

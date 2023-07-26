@@ -27,13 +27,27 @@ public class ReminderController {
     }
 
     public long addNewReminder(Reminder rmd) {
-        String remindDateTime = CalendarUtils.DateToString(rmd.getTimeRemind(), "yyyy-MM-dd hh:mm:ss");
         ContentValues values = new ContentValues();
         values.put(DBHelper.REMINDER_COL_NAME,rmd.getNameRemind());
-        values.put(DBHelper.REMINDER_COL_TIME_REMIND,remindDateTime);
+        values.put(DBHelper.REMINDER_COL_TIME_REMIND,rmd.getTimeRemind());
         values.put(DBHelper.REMINDER_COL_SCHEDULE_ID,rmd.getScheduleId());
         values.put(DBHelper.REMINDER_COL_SOUND_ID,rmd.getSoundId());
-        return database.insert(DBHelper.TABLE_USER, null, values);
+        return database.insert(DBHelper.TABLE_REMINDER, null, values);
+    }
+
+    public long editReminder(Reminder rmd) {
+        ContentValues values = new ContentValues();
+        values.put(DBHelper.REMINDER_COL_NAME,rmd.getNameRemind());
+        values.put(DBHelper.REMINDER_COL_TIME_REMIND,rmd.getTimeRemind());
+        values.put(DBHelper.REMINDER_COL_SCHEDULE_ID,rmd.getScheduleId());
+        values.put(DBHelper.REMINDER_COL_SOUND_ID,rmd.getSoundId());
+        String[] args = {rmd.getId() + ""};
+        return database.update(DBHelper.TABLE_REMINDER, values, DBHelper.REMINDER_COL_ID + "= ?", args);
+    }
+
+    public long deleteReminder(Reminder rmd) {
+        String[] args = {rmd.getId() + ""};
+        return database.delete(DBHelper.TABLE_REMINDER, DBHelper.REMINDER_COL_ID + "= ?", args);
     }
 
     public ArrayList<Reminder> getReminderByScheduleID(int scheduleID) throws ParseException {
@@ -51,12 +65,32 @@ public class ReminderController {
         while(cursor.moveToNext()) {
             int id = cursor.getInt(0);
             String name = cursor.getString(1);
-            Date scheDate = dateSimple.parse(cursor.getString(2));
+            String scheDate = cursor.getString(2);
             int scheID = cursor.getInt(3);
             int soundID = cursor.getInt(4);
 
             reminders.add(new Reminder(id, name, scheDate, scheID, soundID));
         }
         return reminders;
+    }
+
+    public Reminder getRemindByRemindID(int remindID) {
+        String query = "SELECT * "
+                + "FROM " + DBHelper.TABLE_REMINDER
+                + " WHERE " + DBHelper.REMINDER_COL_ID + " = ?";
+
+        String[] args = {remindID + ""};
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, args);
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String scheDate = cursor.getString(2);
+            int scheID = cursor.getInt(3);
+            int soundID = cursor.getInt(4);
+            return new Reminder(id, name, scheDate, scheID, soundID);
+        }
+        return null;
     }
 }
