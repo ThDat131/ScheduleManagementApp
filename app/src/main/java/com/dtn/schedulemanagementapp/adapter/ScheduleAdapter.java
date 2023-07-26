@@ -48,12 +48,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Schedule schedule = scheduleArrayList.get(position);
         holder.lblScheduleName.setText(schedule.getName());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        String timeStart = dateFormat.format(schedule.getStartDate());
-        String timeEnd = dateFormat.format(schedule.getEndDate());
-
-        holder.lblScheduleStartDate.setText(timeStart);
-        holder.lblScheduleEndDate.setText(timeEnd);
+        holder.lblScheduleStartDate.setText(schedule.getStartDate());
+        holder.lblScheduleEndDate.setText(schedule.getEndDate());
     }
 
     @Override

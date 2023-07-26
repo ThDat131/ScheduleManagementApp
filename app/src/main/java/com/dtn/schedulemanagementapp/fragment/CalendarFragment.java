@@ -30,10 +30,7 @@ import java.util.Date;
 public class CalendarFragment extends Fragment {
 
     private ScheduleController schCtrl;
-
-    private CalendarView calendaView;
     private RecyclerView rcvSchedules;
-
     private CalendarView calendarView;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
@@ -80,8 +77,6 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-
-        scheduleArrayList = new ArrayList<Schedule>();
 
         rcvSchedules = view.findViewById(R.id.rcvSchedules);
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
