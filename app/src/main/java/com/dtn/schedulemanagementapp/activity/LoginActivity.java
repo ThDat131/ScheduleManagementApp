@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.database.UserController;
@@ -30,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
         return etText.getText().toString().trim().length() <= 0;
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 //                return true;
 //            }
 //        };
+        DBHelper dbHelper = DBHelper.getInstance(LoginActivity.this);
         mbtnLogin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,8 +71,10 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("key_username", un);
                     editor.putBoolean("logged in", true);
+                    if(un.equals("admin"))
+                        editor.putBoolean("admin_user", true);
                     editor.apply();
-                    Toast.makeText(getApplicationContext(), "Welcome back " + medtUserName.getText().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Welcome back " + un, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                 }

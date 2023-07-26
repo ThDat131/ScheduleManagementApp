@@ -1,12 +1,12 @@
 package com.dtn.schedulemanagementapp.database;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.dtn.schedulemanagementapp.models.Schedule;
+import com.dtn.schedulemanagementapp.models.stats.ScheduleStatsByCategory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,4 +69,64 @@ public class ScheduleControlller {
         return schedules;
     }
 
+    public ArrayList<ScheduleStatsByCategory> StatsByCategory(String username) {
+
+        ArrayList<ScheduleStatsByCategory> scheduleNum = new ArrayList<>();
+        String query = "SELECT c." + DBHelper.CATEGORY_COL_NAME + ", COUNT(*) AS qty" +
+                " FROM " + DBHelper.TABLE_SCHEDULE + " s" +
+                " INNER JOIN " +  DBHelper.TABLE_USER + " u, " + DBHelper.TABLE_CATEGORY + " c" +
+                " ON s." + DBHelper.SCHEDULE_COL_USERNAME +  " = u." + DBHelper.USER_COL_USERNAME + " AND s." + DBHelper.SCHEDULE_COL_CATE_ID + " = c." + DBHelper.CATEGORY_COL_ID +
+                " WHERE u." + DBHelper.USER_COL_USERNAME + "= 'admin'" +
+                " AND u." + DBHelper.USER_COL_USERNAME + " = ?" +
+                " GROUP BY c." + DBHelper.CATEGORY_COL_ID;
+
+        String []args = {username};
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, args);
+
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(0);
+            int qty = cursor.getInt(1);
+
+            scheduleNum.add(new ScheduleStatsByCategory(name, qty));
+        }
+        return scheduleNum;
+    }
+
+    public ArrayList<ScheduleStatsByCategory> StatsByDate(String username, String startDate, String endDate) {
+
+        ArrayList<ScheduleStatsByCategory> scheduleNum = new ArrayList<>();
+        String query = "SELECT s." + DBHelper.SCHEDULE_COL_START_DATE + ", COUNT(*) AS qty" +
+                " FROM " + DBHelper.TABLE_SCHEDULE + " s" +
+                " INNER JOIN " +  DBHelper.TABLE_USER + " u" +
+                " ON s." + DBHelper.SCHEDULE_COL_USERNAME +  " = u." + DBHelper.USER_COL_USERNAME +
+                " WHERE u." + DBHelper.USER_COL_USERNAME + "= ? AND " + DBHelper.SCHEDULE_COL_START_DATE + " >= ? AND  s." + DBHelper.SCHEDULE_COL_END_DATE + "< ?" +
+                " GROUP BY s." + DBHelper.SCHEDULE_COL_START_DATE;
+
+        String []args = {username, startDate, endDate};
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, args);
+
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(0);
+            int qty = cursor.getInt(1);
+
+            scheduleNum.add(new ScheduleStatsByCategory(name, qty));
+        }
+        return scheduleNum;
+    }
+
+    public boolean isCoincideDate(String startDate, String endDate) {
+        String query = "SELECT " + DBHelper.SCHEDULE_COL_ID +
+                " FROM " + DBHelper.TABLE_SCHEDULE +
+                " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " < ? AND " + DBHelper.SCHEDULE_COL_END_DATE + " > ?" +
+                " OR " + DBHelper.SCHEDULE_COL_START_DATE + " BETWEEN ? AND ?" +
+                " OR " + DBHelper.SCHEDULE_COL_END_DATE + " BETWEEN ? AND ?";
+        String[] args = {startDate, endDate, startDate, endDate, startDate, endDate};
+        Cursor c = database.rawQuery(query, args);
+        if (c != null && c.getCount() > 0){
+            return false;
+        }
+        return true;
+    }
 }
