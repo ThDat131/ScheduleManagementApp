@@ -2,6 +2,7 @@ package com.dtn.schedulemanagementapp.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -83,14 +84,12 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        Date date = new Date();
         schCtrl = new ScheduleController(getContext());
         rcvSchedules = view.findViewById(R.id.rcvSche);
-        try {
-            scheduleArrayList = schCtrl.getScheduleByDate(date);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        String username = prefs.getString("key_username", "admin");
+        scheduleArrayList = schCtrl.getSchedulesByUsername(username);
 
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
         rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));

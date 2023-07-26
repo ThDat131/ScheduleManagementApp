@@ -10,6 +10,7 @@ import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.models.stats.ScheduleStatsByCategory;
 import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +36,28 @@ public class ScheduleController {
         values.put(DBHelper.SCHEDULE_COL_CATE_ID,schedule.getCateId());
         values.put(DBHelper.SCHEDULE_COL_USERNAME,schedule.getUserId());
         return database.insert(DBHelper.TABLE_SCHEDULE, null, values);
+    }
+
+    public ArrayList<Schedule> getSchedulesByUsername(String username) {
+        ArrayList<Schedule> scheduleArrayList = new ArrayList<>();
+        String query = "SELECT * FROM " + DBHelper.TABLE_SCHEDULE + " WHERE " + DBHelper.SCHEDULE_COL_USERNAME + " =?";
+        String[] args = {username};
+        Cursor cursor = database.rawQuery(query, args);
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            String note = cursor.getString(2);
+            String startDate = cursor.getString(3);
+            String endDate = cursor.getString(4);
+            int cateId = cursor.getInt(5);
+            String usrname = cursor.getString(6);
+
+            Schedule schedule = new Schedule(id, name, note, startDate, endDate, usrname, cateId);
+            scheduleArrayList.add(schedule);
+        }
+        return scheduleArrayList;
+
     }
 
     public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {

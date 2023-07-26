@@ -79,14 +79,7 @@
         android:orientation="vertical">
 
         <ImageButton
-            android:id="@+id/btnInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            app:srcCompat="@drawable/pen_solid" />
-
-        <ImageButton
-            android:id="@+id/btnDelete"
+            android:id="@+id/btnDeleteSchedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/trash_solid" />
