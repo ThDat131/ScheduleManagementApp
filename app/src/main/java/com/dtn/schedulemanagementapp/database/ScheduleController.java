@@ -15,11 +15,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class ScheduleControlller {
+public class ScheduleController {
     SQLiteDatabase database;
     DBHelper helper;
 
-    public ScheduleControlller(Context context){
+    public ScheduleController(Context context){
         helper = DBHelper.getInstance(context);
         database = helper.getWritableDatabase();
     }
