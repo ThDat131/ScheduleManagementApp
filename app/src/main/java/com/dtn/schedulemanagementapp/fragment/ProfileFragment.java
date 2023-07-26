@@ -3,19 +3,24 @@ package com.dtn.schedulemanagementapp.fragment;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dtn.schedulemanagementapp.activity.ChangeUserInfo;
 import com.dtn.schedulemanagementapp.activity.LoginActivity;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.AdminActivity;
@@ -38,6 +43,8 @@ public class ProfileFragment extends Fragment implements Serializable {
     Button btnScheduleStats;
     Button btnAdmin;
 
+    UserController userController = new UserController(this.getContext());
+
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -45,6 +52,8 @@ public class ProfileFragment extends Fragment implements Serializable {
     private String mParam2;
 
     private boolean f;
+
+
 
     public ProfileFragment() {
     }
@@ -82,11 +91,13 @@ public class ProfileFragment extends Fragment implements Serializable {
 //        mbtnProfileLogin.setText((CharSequence) bundle.getSerializable("key"));
 
 
+
+
         SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
+        String un = prefs.getString("key_username", "User name");
         f = prefs.getBoolean("logged in", false);
         if (f) {
-            String un = prefs.getString("key_username", "User name");
             tvProfileName.setText(un);
         }
 
@@ -110,6 +121,45 @@ public class ProfileFragment extends Fragment implements Serializable {
                 startActivity(intentToAdmin);
 //                Toast.makeText(getActivity(), "Button Clicked", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        btnUserInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileFragment.this.requireActivity());
+                builder.setTitle("User info");
+                String info = prefs.getString("key_username", "");
+
+                builder.setMessage("Username: " + info + "\nFull name: ");
+                User user = userController.getUserByUsername(un);
+                String fullname = user.getFullName();
+                String birthday = user.getBirthDate().toString();
+                String email = user.getEmail();
+
+                builder.setMessage("Username: " + un +
+                        "\nFull name: " + fullname +
+                        "\nBirthday: " + birthday +
+                        "\nEmail: " + email);
+                builder.setPositiveButton("Change info", (dialogInterface, i) -> {
+                    AlertDialog.Builder confirmPassword = new AlertDialog.Builder(ProfileFragment.this.requireActivity());
+                    EditText pass = new EditText(getContext());
+                    pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    confirmPassword.setTitle("Confirm password")
+                            .setView(pass)
+                            .setPositiveButton("Enter", (dialogInterface1, i1) -> {
+                                if(user.getPassword().equals(pass.getText().toString())){
+                                    Toast.makeText(getContext(), "Password correct", Toast.LENGTH_SHORT).show();
+                                    Intent intentToChangeInfo = new Intent(getContext(), ChangeUserInfo.class);
+                                    startActivity(intentToChangeInfo);
+                                }else
+                                    Toast.makeText(getContext(), "Password incorrect", Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("Cancel", null);
+                    confirmPassword.create().show();
+                });
+                builder.setNegativeButton("OK", null);
+                builder.create().show();
             }
         });
         return v;

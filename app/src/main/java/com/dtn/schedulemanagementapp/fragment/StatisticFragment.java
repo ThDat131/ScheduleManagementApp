@@ -13,7 +13,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.dtn.schedulemanagementapp.R;
-import com.dtn.schedulemanagementapp.database.ScheduleControlller;
+import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.stats.ScheduleStatsByCategory;
 import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 import com.github.mikephil.charting.charts.BarChart;
@@ -236,8 +236,8 @@ public class StatisticFragment extends Fragment {
         barArrayList1 = new ArrayList<>();
         labelBar1 = new ArrayList<String>();
         ArrayList<ScheduleStatsByCategory> datas = new ArrayList<>();
-        ScheduleControlller scheduleControlller = new ScheduleControlller(this.getContext());
-        datas = scheduleControlller.StatsByDate("admin", StringStartDate, StringEndDate);
+        ScheduleController scheduleController = new ScheduleController(this.getContext());
+        datas = scheduleController.StatsByDate("admin", StringStartDate, StringEndDate);
         int index = 0;
 
         for (ScheduleStatsByCategory data : datas) {
@@ -252,8 +252,8 @@ public class StatisticFragment extends Fragment {
         barArrayList = new ArrayList<>();
         labelBar = new ArrayList<String>();
         ArrayList<ScheduleStatsByCategory> datas = new ArrayList<>();
-        ScheduleControlller scheduleControlller = new ScheduleControlller(this.getContext());
-        datas = scheduleControlller.StatsByCategory("admin");
+        ScheduleController scheduleController = new ScheduleController(this.getContext());
+        datas = scheduleController.StatsByCategory("admin");
         int index = 0;
 
         for (ScheduleStatsByCategory data : datas) {
