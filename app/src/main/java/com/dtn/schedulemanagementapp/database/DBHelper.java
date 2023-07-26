@@ -113,7 +113,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + SCHEDULE_COL_CATE_ID + " INTEGER NOT NULL,"
                 + SCHEDULE_COL_USERNAME + " VARCHAR(50) NOT NULL,"
                 + "FOREIGN KEY (" + SCHEDULE_COL_USERNAME + ") REFERENCES " + TABLE_USER + "(" + USER_COL_USERNAME + ")" + " ON DELETE CASCADE" + ","
-                + "FOREIGN KEY (" + SCHEDULE_COL_CATE_ID + ") REFERENCES " + TABLE_CATEGORY + "(" + CATEGORY_COL_ID + ")"
+                + "FOREIGN KEY (" + SCHEDULE_COL_CATE_ID + ") REFERENCES " + TABLE_CATEGORY + "(" + CATEGORY_COL_ID + ")" + " ON DELETE CASCADE"
                 + ");";
 
         String CREATE_SOUND_TABLE = "CREATE TABLE " + TABLE_SOUND + "("
@@ -138,13 +138,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SOUND_TABLE);
         db.execSQL(CREATE_REMINDER_TABLE);
 
+
         String INSERT_USER = "INSERT INTO " + TABLE_USER + " ("
                 + USER_COL_USERNAME + ","
                 + USER_COL_PASSWORD + ","
                 + USER_COL_FULL_NAME + ","
                 + USER_COL_BIRTHDATE + ","
                 + USER_COL_ROLE + ")"
-                + "VALUES ('admin', 'Admin@123', 'Admin', '2002-01-13', 1);";
+                + "VALUES ('admin', '123', 'Admin', '2002-01-13', 1);";
 
         String INSERT_CATEGORY = "INSERT INTO " + TABLE_CATEGORY + " ("
                 + CATEGORY_COL_NAME + ","

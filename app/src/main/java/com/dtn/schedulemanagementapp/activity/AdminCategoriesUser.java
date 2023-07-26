@@ -43,7 +43,9 @@ public class AdminCategoriesUser extends AppCompatActivity {
         userAdapter.SetOnUserItemClickListener(new IOnUserItemClickListener() {
             @Override
             public void onUserItemClick(User user) {
-                return;
+                Intent intent = new Intent(AdminCategoriesUser.this, AdminCategoriesActivity.class);
+                intent.putExtra("selected_user", user);
+                startActivity(intent);
             }
         });
         rcvUser.setLayoutManager(new LinearLayoutManager(AdminCategoriesUser.this));

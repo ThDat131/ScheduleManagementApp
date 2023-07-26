@@ -115,4 +115,18 @@ public class ScheduleControlller {
         }
         return scheduleNum;
     }
+
+    public boolean isCoincideDate(String startDate, String endDate) {
+        String query = "SELECT " + DBHelper.SCHEDULE_COL_ID +
+                " FROM " + DBHelper.TABLE_SCHEDULE +
+                " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " < ? AND " + DBHelper.SCHEDULE_COL_END_DATE + " > ?" +
+                " OR " + DBHelper.SCHEDULE_COL_START_DATE + " BETWEEN ? AND ?" +
+                " OR " + DBHelper.SCHEDULE_COL_END_DATE + " BETWEEN ? AND ?";
+        String[] args = {startDate, endDate, startDate, endDate, startDate, endDate};
+        Cursor c = database.rawQuery(query, args);
+        if (c != null && c.getCount() > 0){
+            return false;
+        }
+        return true;
+    }
 }

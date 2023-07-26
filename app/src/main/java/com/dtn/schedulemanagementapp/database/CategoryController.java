@@ -62,7 +62,7 @@ public class CategoryController {
     }
 
     public boolean deleteCategory(Category category) {
-
+        database.setForeignKeyConstraintsEnabled(true);
         return database.delete(DBHelper.TABLE_CATEGORY,
                 DBHelper.CATEGORY_COL_ID + "= ?", new String[]{String.valueOf(category.getId())}) > 0;
     }
@@ -74,5 +74,23 @@ public class CategoryController {
         values.put(DBHelper.CATEGORY_COL_USERNAME, category.getUsername());
 
         return database.insert(DBHelper.TABLE_CATEGORY, null, values);
+    }
+
+    public List<Category> getCategoriesByUser(String username) {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM " + helper.TABLE_CATEGORY
+                + " WHERE " + DBHelper.CATEGORY_COL_USERNAME + " =?";
+        String[] args = {username};
+
+        Cursor c = database.rawQuery(query, args);
+        while (c.moveToNext()){
+            Category category = new Category();
+            category.setId(c.getInt(0));
+            category.setName(c.getString(1));
+            category.setUsername(c.getString(3));
+            category.setColor(c.getString(2));
+            categories.add(category);
+        }
+        return categories;
     }
 }

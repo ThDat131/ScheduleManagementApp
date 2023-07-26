@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.models.Category;
 import com.dtn.schedulemanagementapp.user_interface.IOnCategoryItemClickListener;
+import com.dtn.schedulemanagementapp.user_interface.IOnUserItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,12 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
     Context context;
 
     private onRecieveCategoryListener listener;
+
+    public IOnCategoryItemClickListener clickListener;
+
+    public void SetOnCateItemClickListener(IOnCategoryItemClickListener listener) {
+        this.clickListener = listener;
+    }
 
 
     public CategoryAdapter(List<Category> categories, Context context){
@@ -74,7 +81,13 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
         Category category = categories.get(position);
         holder.lblCateName.setText(category.getName());
         category.setColor(generateRandomColor()+"");
-        holder.categoryActionDropDownMenu.setOnClickListener(view -> listener.onRecieveCategorySuccess(category, position));
+//        holder.categoryActionDropDownMenu.setOnClickListener(view -> listener.onRecieveCategorySuccess(category, position));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onCategoryItemClick(category);
+            }
+        });
     }
 
 
@@ -88,13 +101,11 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
 
         private ImageView imgCate;
         private TextView lblCateName;
-        private ImageButton categoryActionDropDownMenu;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgCate = itemView.findViewById(R.id.imgCate);
             lblCateName = itemView.findViewById(R.id.lblCateName);
-            categoryActionDropDownMenu = itemView.findViewById(R.id.categoryActionDropDownMenu);
             imgCate.setBackgroundColor(generateRandomColor());
         }
     }
@@ -114,6 +125,11 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
         notifyItemInserted(categories.indexOf(category));
     }
 
+    public void editItem(Category category, int position) {
+        categories.set(position, category);
+        notifyItemChanged(position);
+    }
+
     public static int generateRandomColor() {
         Random random = new Random();
 
@@ -129,6 +145,10 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
 
     public interface onRecieveCategoryListener {
         void onRecieveCategorySuccess(Category category, int pos);
+    }
+
+    public int getPosCate(Category category) {
+        return this.categories.indexOf(category);
     }
 
 }

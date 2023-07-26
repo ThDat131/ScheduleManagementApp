@@ -29,6 +29,7 @@ import com.dtn.schedulemanagementapp.adapter.CategoryAdapter;
 import com.dtn.schedulemanagementapp.adapter.UserAdapter;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.Category;
+import com.dtn.schedulemanagementapp.user_interface.IOnCategoryItemClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -84,11 +85,31 @@ public class CategoryFragment extends Fragment {
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
 
-        categoryAdapter.setOnRecieveCategoryListener((category, pos) -> {
-            this.pos = pos;
-            RecyclerView.ViewHolder viewHolder =  recyclerViewCatogories.findViewHolderForAdapterPosition(pos);
-            showPopup(viewHolder.itemView, category);
+//        categoryAdapter.setOnRecieveCategoryListener((category, pos) -> {
+//            this.pos = pos;
+//            RecyclerView.ViewHolder viewHolder =  recyclerViewCatogories.findViewHolderForAdapterPosition(pos);
+//            showPopup(viewHolder.itemView, category);
+//        });
+
+        categoryAdapter.SetOnCateItemClickListener(new IOnCategoryItemClickListener() {
+            @Override
+            public void onCategoryItemClick(Category category) {
+                pos = categoryAdapter.getPosCate(category);
+                if (pos != -1) {
+                    RecyclerView.ViewHolder viewHolder =  recyclerViewCatogories.findViewHolderForAdapterPosition(pos);
+                    showPopup(viewHolder.itemView, category);
+                }
+            }
         });
+
+//        categoryAdapter.setOnRecieveCategoryListener(new CategoryAdapter.onRecieveCategoryListener() {
+//            @Override
+//            public void onRecieveCategorySuccess(Category category, int pos) {
+//                this.pos = pos;
+//                RecyclerView.ViewHolder viewHolder =  recyclerViewCatogories.findViewHolderForAdapterPosition(pos);
+//                showPopup(viewHolder.itemView, category);
+//            }
+//        });
 
 
         fbtnAddCate.setOnClickListener(view ->  {
