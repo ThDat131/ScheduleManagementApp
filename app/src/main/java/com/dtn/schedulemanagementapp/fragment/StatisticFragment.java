@@ -1,6 +1,9 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,8 +12,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.ScheduleController;
@@ -45,14 +50,16 @@ public class StatisticFragment extends Fragment {
     TextView txtTo;
     BarChart barChart;
     BarChart barChart1;
+    Button btnStats;
 
-    ArrayList barArrayList;
+    ArrayList barArrayList = new ArrayList<>();
 
-    ArrayList barArrayList1;
+    ArrayList barArrayList1 = new ArrayList<>();
 
-    ArrayList labelBar;
-    ArrayList labelBar1;
+    ArrayList labelBar = new ArrayList<>();
+    ArrayList labelBar1 = new ArrayList<>();
 
+    String username;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,10 +95,9 @@ public class StatisticFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        username = prefs.getString("key_username", "User name");
     }
 
     @Override
@@ -105,6 +111,7 @@ public class StatisticFragment extends Fragment {
         txtTo = v.findViewById(R.id.txtTo);
         barChart = v.findViewById(R.id.barChart);
         barChart1 = v.findViewById(R.id.barChart1);
+        btnStats = v.findViewById(R.id.btnStats);
 
         txtFrom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,68 +153,82 @@ public class StatisticFragment extends Fragment {
             }
         });
 
-        getData();
+        btnStats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getData();
 
-        String[] labelsArr = new String[labelBar.size()];
-        labelBar.toArray(labelsArr);
+                String[] labelsArr = new String[labelBar.size()];
+                labelBar.toArray(labelsArr);
 
 
-        BarDataSet barDataSet = new BarDataSet(barArrayList, "Schedule by Category");
+                BarDataSet barDataSet = new BarDataSet(barArrayList, "Schedule by Category");
 
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(16);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsArr));
-        xAxis.setLabelCount(1);
-        YAxis yAxisL = barChart.getAxisLeft();
-        yAxisL.setLabelCount(1);
+                XAxis xAxis = barChart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setTextSize(16);
+                xAxis.setValueFormatter(new IndexAxisValueFormatter(labelsArr));
+                xAxis.setLabelCount(1);
+                YAxis yAxisL = barChart.getAxisLeft();
+                yAxisL.setLabelCount(1);
 
-        YAxis yAxisR = barChart.getAxisRight();
-        yAxisR.setEnabled(false);
+                YAxis yAxisR = barChart.getAxisRight();
+                yAxisR.setEnabled(false);
 
-        BarData barData = new BarData(barDataSet);
+                BarData barData = new BarData(barDataSet);
 
-        barChart.setData(barData);
+                barChart.setData(barData);
 
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        barDataSet.setValueTextColor(Color.BLACK);
+                barDataSet.setValueTextColor(Color.BLACK);
 
-        barDataSet.setValueTextSize(16);
+                barDataSet.setValueTextSize(16);
 
-        barChart.getDescription().setEnabled(false);
+                barChart.getDescription().setEnabled(false);
 
-        // chart 2
+                // chart 2
 
-        getData1();
+                getData1();
 
-        String[] labelsArr1 = new String[labelBar1.size()];
-        labelBar1.toArray(labelsArr1);
+                String[] labelsArr1 = new String[labelBar1.size()];
+                labelBar1.toArray(labelsArr1);
 
-        BarDataSet barDataSet1 = new BarDataSet(barArrayList1, "Schedule by date");
+                BarDataSet barDataSet1 = new BarDataSet(barArrayList1, "Schedule by date");
 
-        XAxis xAxis1 = barChart1.getXAxis();
-        xAxis1.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis1.setTextSize(16);
-        xAxis1.setValueFormatter(new IndexAxisValueFormatter(labelsArr1));
-        xAxis1.setLabelCount(1);
-        YAxis yAxisL1 = barChart1.getAxisLeft();
-        yAxisL1.setLabelCount(1);
+                XAxis xAxis1 = barChart1.getXAxis();
+                xAxis1.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis1.setTextSize(16);
+                xAxis1.setValueFormatter(new IndexAxisValueFormatter(labelsArr1));
+                xAxis1.setLabelCount(1);
+                YAxis yAxisL1 = barChart1.getAxisLeft();
+                yAxisL1.setLabelCount(1);
 
-        YAxis yAxisR1 = barChart1.getAxisRight();
-        yAxisR1.setEnabled(false);
+                YAxis yAxisR1 = barChart1.getAxisRight();
+                yAxisR1.setEnabled(false);
 
-        BarData barData1 = new BarData(barDataSet1);
+                BarData barData1 = new BarData(barDataSet1);
 
-        barChart1.setData(barData1);
+                barChart1.setData(barData1);
 
-        barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
+                barDataSet1.setColors(ColorTemplate.COLORFUL_COLORS);
 
-        barDataSet1.setValueTextColor(Color.BLACK);
+                barDataSet1.setValueTextColor(Color.BLACK);
 
-        barDataSet1.setValueTextSize(16);
+                barDataSet1.setValueTextSize(16);
 
-        barChart1.getDescription().setEnabled(false);
+                barChart1.getDescription().setEnabled(false);
+
+                barChart.animateXY(1000, 1000);
+                barChart1.animateXY(1000, 1000);
+                barChart.invalidate();
+                barChart1.invalidate();
+
+
+            }
+        });
+
+
 
         return v;
 
@@ -219,9 +240,9 @@ public class StatisticFragment extends Fragment {
         if (txtFrom.getText().toString().isEmpty() || txtTo.getText().toString().isEmpty()) {
             LocalDate today = LocalDate.now();
             String dateFormatted = today.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            txtFrom.setText("01/07/2023");
-            txtTo.setText("01/08/2023");
 
+            txtFrom.setText(dateFormatted);
+            txtTo.setText(dateFormatted);
         }
 
         String startDate = txtFrom.getText().toString();
@@ -237,12 +258,12 @@ public class StatisticFragment extends Fragment {
         labelBar1 = new ArrayList<String>();
         ArrayList<ScheduleStatsByCategory> datas = new ArrayList<>();
         ScheduleController scheduleController = new ScheduleController(this.getContext());
-        datas = scheduleController.StatsByDate("admin", StringStartDate, StringEndDate);
+        datas = scheduleController.StatsByDate(username, StringStartDate, StringEndDate);
         int index = 0;
 
         for (ScheduleStatsByCategory data : datas) {
             barArrayList1.add(new BarEntry(index, data.getQty(), data.getName()));
-            labelBar1.add(CalendarUtils.StringToString(data.getName(), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy"));
+            labelBar1.add(CalendarUtils.StringToString(data.getName(), "yyyy-MM-dd", "dd/MM/yyyy"));
             index++;
 
         }
@@ -253,7 +274,7 @@ public class StatisticFragment extends Fragment {
         labelBar = new ArrayList<String>();
         ArrayList<ScheduleStatsByCategory> datas = new ArrayList<>();
         ScheduleController scheduleController = new ScheduleController(this.getContext());
-        datas = scheduleController.StatsByCategory("admin");
+        datas = scheduleController.StatsByCategory(username);
         int index = 0;
 
         for (ScheduleStatsByCategory data : datas) {

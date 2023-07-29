@@ -1,5 +1,7 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -30,13 +32,11 @@ import java.util.Date;
 public class CalendarFragment extends Fragment {
 
     private ScheduleController schCtrl;
-
-    private CalendarView calendaView;
     private RecyclerView rcvSchedules;
-
     private CalendarView calendarView;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
+    String username;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -74,14 +74,15 @@ public class CalendarFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences prefs = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        username = prefs.getString("key_username", "admin");
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
-
-        scheduleArrayList = new ArrayList<Schedule>();
 
         rcvSchedules = view.findViewById(R.id.rcvSchedules);
         scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
@@ -96,28 +97,11 @@ public class CalendarFragment extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth, 0, 0, 0);
-
                 Date date = calendar.getTime();
-
-                try {
-                    schCtrl = new ScheduleController(view.getContext());
-                    scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+                 schCtrl = new ScheduleController(view.getContext());
+                scheduleAdapter.setData(schCtrl.getScheduleByDate(date, username));
             }
         });
-
-//        calendaView = view.findViewById(R.id.calendarView);
-//        calendaView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                intent.putExtra("frag",R.id.category);
-//                startActivity(intent);
-//                ((Activity) getActivity()).overridePendingTransition(0, 0);
-//            }
-//        });
 
         return view;
     }

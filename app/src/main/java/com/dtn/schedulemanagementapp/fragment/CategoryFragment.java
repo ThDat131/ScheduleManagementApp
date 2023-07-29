@@ -72,10 +72,13 @@ public class CategoryFragment extends Fragment {
         recyclerViewCatogories = v.findViewById(R.id.recyclerViewCatogories);
         fbtnAddCate = v.findViewById(R.id.btnAddCate);
 
+        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
+
         categoryController = new CategoryController(v.getContext());
         userController = new UserController(v.getContext());
 
-        categories = categoryController.getAllCategories();
+        String username = prefs.getString("key_username", "admin");
+        categories = categoryController.getCategoriesByUser(username);
         Log.d("CATEGORIS ", categories.size() + "");
 
         categoryAdapter = new CategoryAdapter(categories, this.getContext());
@@ -83,7 +86,6 @@ public class CategoryFragment extends Fragment {
         recyclerViewCatogories.setAdapter(categoryAdapter);
         recyclerViewCatogories.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        SharedPreferences prefs = requireActivity().getSharedPreferences("pref", MODE_PRIVATE);
 
 //        categoryAdapter.setOnRecieveCategoryListener((category, pos) -> {
 //            this.pos = pos;

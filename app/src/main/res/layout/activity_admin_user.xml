@@ -15,7 +15,8 @@
       android:id="@+id/svUser"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="10dp">
+      android:layout_marginBottom="10dp"
+      android:queryHint="Type your username">
 
   </SearchView>
 
@@ -30,13 +31,15 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddNewUser"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/circle_plus_solid"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/circle_plus_solid"
         android:text="" />
   </RelativeLayout>
 

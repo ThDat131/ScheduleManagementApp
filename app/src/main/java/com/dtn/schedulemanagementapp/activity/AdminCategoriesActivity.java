@@ -60,7 +60,7 @@ public class AdminCategoriesActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Categories of " + currUser.getUsername());
 
         CategoryController cateController = new CategoryController(AdminCategoriesActivity.this);
-        cates = cateController.getCategoriesByUser(currUser.getUsername());
+        cates = cateController.getCategoriesByOnlyUser(currUser.getUsername());
 
         categoryAdapter = new CategoryAdapter(cates, AdminCategoriesActivity.this);
         rcvCate.setLayoutManager(new LinearLayoutManager(AdminCategoriesActivity.this));

@@ -5,4 +5,5 @@
     <string name="title_activity_admin">AdminActivity</string>
     <string name="input_required">Please input all information before submit</string>
     <string name="password_not_match">Password not match, please try again</string>
+    <string name="channel_id">notify</string>
 </resources>

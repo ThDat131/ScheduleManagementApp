@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.dtn.schedulemanagementapp.R;
@@ -30,15 +33,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        createNotificationChannel();
 
         botNav = findViewById(R.id.botNav);
 
         // Set màn hình xuất hiện đầu tiên
-        botNav.setSelectedItemId(R.id.calendar);
-        replaceFragment(new CalendarFragment());
-
-
-
         botNav.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.time) {
                 replaceFragment(new ScheduleFragment());
@@ -57,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+
+
+
+
+
+
     }
 
     @Override
@@ -64,9 +69,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         Intent intent = getIntent();
-
-        botNav.setSelectedItemId(R.id.calendar);
-        replaceFragment(new CalendarFragment());
+        String fragment = intent.getStringExtra("fragment");
+        if (fragment != null) {
+            if (fragment.equals("schedule")) {
+                botNav.setSelectedItemId(R.id.time);
+                replaceFragment(new ScheduleFragment());
+            }
+        }
+        else {
+            botNav.setSelectedItemId(R.id.calendar);
+            replaceFragment(new CalendarFragment());
+        }
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setTitle("Calendar Name Placeholder");
 
@@ -96,5 +109,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_id);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notify", name, importance);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

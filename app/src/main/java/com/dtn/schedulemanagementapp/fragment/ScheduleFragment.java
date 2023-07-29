@@ -1,14 +1,32 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
+import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
+import com.dtn.schedulemanagementapp.activity.NewScheduleActivity;
+import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
+import com.dtn.schedulemanagementapp.database.DBHelper;
+import com.dtn.schedulemanagementapp.database.ScheduleController;
+import com.dtn.schedulemanagementapp.models.Schedule;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +34,12 @@ import com.dtn.schedulemanagementapp.R;
  * create an instance of this fragment.
  */
 public class ScheduleFragment extends Fragment {
+
+    private ScheduleController schCtrl;
+    private RecyclerView rcvSchedules;
+    private FloatingActionButton btnNewSchedule;
+    private ScheduleAdapter scheduleAdapter;
+    private ArrayList<Schedule> scheduleArrayList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +84,29 @@ public class ScheduleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        schCtrl = new ScheduleController(getContext());
+        rcvSchedules = view.findViewById(R.id.rcvSche);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        String username = prefs.getString("key_username", "admin");
+        scheduleArrayList = schCtrl.getSchedulesByUsername(username);
+
+        scheduleAdapter = new ScheduleAdapter(scheduleArrayList, getContext());
+        rcvSchedules.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvSchedules.setAdapter(scheduleAdapter);
+
+        btnNewSchedule = view.findViewById(R.id.btnAddNewSche);
+        btnNewSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), NewScheduleActivity.class);
+                startActivity(i);
+                ((Activity) getActivity()).overridePendingTransition(0, 0);
+            }
+        });
+
+        return view;
     }
 }
