@@ -1,9 +1,10 @@
 package com.dtn.schedulemanagementapp.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-public class Schedule {
+public class Schedule implements Serializable {
     private int id;
     private String name;
     private String note;

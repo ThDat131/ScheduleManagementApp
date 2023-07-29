@@ -40,7 +40,7 @@ public class ScheduleController {
 
     public ArrayList<Schedule> getSchedulesByUsername(String username) {
         ArrayList<Schedule> scheduleArrayList = new ArrayList<>();
-        String query = "SELECT * FROM " + DBHelper.TABLE_SCHEDULE + " WHERE " + DBHelper.SCHEDULE_COL_USERNAME + " =?";
+        String query = "SELECT * FROM " + DBHelper.TABLE_SCHEDULE + " WHERE " + DBHelper.SCHEDULE_COL_USERNAME + " =? ORDER BY " + DBHelper.SCHEDULE_COL_START_DATE + " ASC" ;
         String[] args = {username};
         Cursor cursor = database.rawQuery(query, args);
 
@@ -57,6 +57,7 @@ public class ScheduleController {
             scheduleArrayList.add(schedule);
         }
         return scheduleArrayList;
+    }
 
     public long updateSchedule(Schedule schedule) {
         ContentValues values = new ContentValues();
@@ -71,11 +72,12 @@ public class ScheduleController {
     }
 
     public long deleteSchedule(Schedule schedule) {
+        database.setForeignKeyConstraintsEnabled(true);
         String[] args = {schedule.getId() + ""};
         return database.delete(DBHelper.TABLE_SCHEDULE, DBHelper.SCHEDULE_COL_ID + "= ?", args);
     }
 
-    public ArrayList<Schedule> getScheduleByDate(Date dateSchedule) throws ParseException {
+    public ArrayList<Schedule> getScheduleByDate(Date dateSchedule, String userName) {
         SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
         Calendar calendar = Calendar.getInstance();
@@ -89,9 +91,10 @@ public class ScheduleController {
         ArrayList<Schedule> schedules = new ArrayList<Schedule>();
         String query = "SELECT * "
                 + "FROM " + DBHelper.TABLE_SCHEDULE
-                + " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " >= ? OR " + DBHelper.SCHEDULE_COL_END_DATE + " < ?";
+                + " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " >= ? AND " + DBHelper.SCHEDULE_COL_END_DATE + " < ?"
+                + " AND " + DBHelper.SCHEDULE_COL_USERNAME + " =?";
 
-        String[] args = {dateStringStart, dateStringEnd};
+        String[] args = {dateStringStart, dateStringEnd, userName};
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, args);
 
@@ -110,7 +113,7 @@ public class ScheduleController {
         return schedules;
     }
 
-    public Schedule getScheduleByScheduleID(int scheduleID) throws ParseException {
+    public Schedule getScheduleByScheduleID(int scheduleID){
         String query = "SELECT * "
                 + "FROM " + DBHelper.TABLE_SCHEDULE
                 + " WHERE " + DBHelper.SCHEDULE_COL_ID + " >= ?";
@@ -139,8 +142,7 @@ public class ScheduleController {
                 " FROM " + DBHelper.TABLE_SCHEDULE + " s" +
                 " INNER JOIN " +  DBHelper.TABLE_USER + " u, " + DBHelper.TABLE_CATEGORY + " c" +
                 " ON s." + DBHelper.SCHEDULE_COL_USERNAME +  " = u." + DBHelper.USER_COL_USERNAME + " AND s." + DBHelper.SCHEDULE_COL_CATE_ID + " = c." + DBHelper.CATEGORY_COL_ID +
-                " WHERE u." + DBHelper.USER_COL_USERNAME + "= 'admin'" +
-                " AND u." + DBHelper.USER_COL_USERNAME + " = ?" +
+                " WHERE u." + DBHelper.USER_COL_USERNAME + "= ?" +
                 " GROUP BY c." + DBHelper.CATEGORY_COL_ID;
 
         String []args = {username};
@@ -159,12 +161,12 @@ public class ScheduleController {
     public ArrayList<ScheduleStatsByCategory> StatsByDate(String username, String startDate, String endDate) {
 
         ArrayList<ScheduleStatsByCategory> scheduleNum = new ArrayList<>();
-        String query = "SELECT s." + DBHelper.SCHEDULE_COL_START_DATE + ", COUNT(*) AS qty" +
+        String query = "SELECT DATE(s." + DBHelper.SCHEDULE_COL_START_DATE + ") AS date, COUNT(*) AS qty" +
                 " FROM " + DBHelper.TABLE_SCHEDULE + " s" +
                 " INNER JOIN " +  DBHelper.TABLE_USER + " u" +
                 " ON s." + DBHelper.SCHEDULE_COL_USERNAME +  " = u." + DBHelper.USER_COL_USERNAME +
                 " WHERE u." + DBHelper.USER_COL_USERNAME + "= ? AND " + DBHelper.SCHEDULE_COL_START_DATE + " >= ? AND  s." + DBHelper.SCHEDULE_COL_END_DATE + "< ?" +
-                " GROUP BY s." + DBHelper.SCHEDULE_COL_START_DATE;
+                " GROUP BY DATE(s." + DBHelper.SCHEDULE_COL_START_DATE +")";
 
         String []args = {username, startDate, endDate};
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -179,17 +181,18 @@ public class ScheduleController {
         return scheduleNum;
     }
 
-    public boolean isCoincideDate(String startDate, String endDate) {
+    public boolean isCoincideDate(int ScheduleID, String startDate, String endDate) {
         String query = "SELECT " + DBHelper.SCHEDULE_COL_ID +
                 " FROM " + DBHelper.TABLE_SCHEDULE +
-                " WHERE " + DBHelper.SCHEDULE_COL_START_DATE + " < ? AND " + DBHelper.SCHEDULE_COL_END_DATE + " > ?" +
+                " WHERE (" + DBHelper.SCHEDULE_COL_START_DATE + " < ? AND " + DBHelper.SCHEDULE_COL_END_DATE + " > ?" +
                 " OR " + DBHelper.SCHEDULE_COL_START_DATE + " BETWEEN ? AND ?" +
-                " OR " + DBHelper.SCHEDULE_COL_END_DATE + " BETWEEN ? AND ?";
-        String[] args = {startDate, endDate, startDate, endDate, startDate, endDate};
+                " OR " + DBHelper.SCHEDULE_COL_END_DATE + " BETWEEN ? AND ?)" +
+                " AND " + DBHelper.SCHEDULE_COL_ID + " <> ?";
+        String[] args = {startDate, endDate, startDate, endDate, startDate, endDate, String.valueOf(ScheduleID)};
         Cursor c = database.rawQuery(query, args);
         if (c != null && c.getCount() > 0){
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 }

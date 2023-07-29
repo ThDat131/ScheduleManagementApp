@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,6 +16,12 @@ public class CalendarUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         LocalDate parsedDate = LocalDate.parse(date, formatter);
         return Date.from(parsedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date StringToDateTime(String date, String format) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime parsedDate = LocalDateTime.parse(date, formatter);
+        return Date.from(parsedDate.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static String DateToString(Date date, String format) {

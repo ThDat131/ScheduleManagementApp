@@ -27,6 +27,7 @@ import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.database.UserController;
 import com.dtn.schedulemanagementapp.models.User;
 import com.dtn.schedulemanagementapp.user_interface.IOnUserItemClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class AdminUserActivity extends AppCompatActivity {
 
     SearchView svUser;
     RecyclerView rcvUser;
-    Button btnAddNewUser;
+    FloatingActionButton btnAddNewUser;
     UserAdapter userAdapter;
     ArrayList<User> userArrayList = new ArrayList<User>();
 

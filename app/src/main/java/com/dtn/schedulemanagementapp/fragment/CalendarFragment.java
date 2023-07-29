@@ -1,5 +1,7 @@
 package com.dtn.schedulemanagementapp.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,6 +36,7 @@ public class CalendarFragment extends Fragment {
     private CalendarView calendarView;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule>  scheduleArrayList;
+    String username;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -71,6 +74,9 @@ public class CalendarFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SharedPreferences prefs = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+        username = prefs.getString("key_username", "admin");
+
     }
 
     @Override
@@ -91,15 +97,9 @@ public class CalendarFragment extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth, 0, 0, 0);
-
                 Date date = calendar.getTime();
-
-                try {
-                    schCtrl = new ScheduleController(view.getContext());
-                    scheduleAdapter.setData(schCtrl.getScheduleByDate(date));
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
+                 schCtrl = new ScheduleController(view.getContext());
+                scheduleAdapter.setData(schCtrl.getScheduleByDate(date, username));
             }
         });
 

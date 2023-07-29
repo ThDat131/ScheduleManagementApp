@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment implements Serializable {
     Button btnScheduleStats;
     Button btnAdmin;
 
-    UserController userController = new UserController(this.getContext());
+    UserController userController;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -86,6 +86,8 @@ public class ProfileFragment extends Fragment implements Serializable {
         tvProfileName = (TextView) v.findViewById(R.id.tvProfileName);
         btnUserInfo = v.findViewById(R.id.btnUserInfo);
         btnAdmin = v.findViewById(R.id.btnAdmin);
+
+        userController  = new UserController(this.getContext());
 //        Intent intent = getActivity().getIntent();
 //        Bundle bundle = getActivity().getIntent().getExtras();
 //        mbtnProfileLogin.setText((CharSequence) bundle.getSerializable("key"));

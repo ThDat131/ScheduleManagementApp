@@ -67,7 +67,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 builder.setTitle("Alert !");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
-                    sCtrl.deleteSchedule(schedule);
+                    if(sCtrl.deleteSchedule(schedule) > 0) {
+                        scheduleArrayList.remove(holder.getAdapterPosition());
+                        notifyItemRemoved(holder.getAdapterPosition());
+                        Toast.makeText(context, "Delete schedule successfully", Toast.LENGTH_SHORT).show();
+                    }
+                    else Toast.makeText(context, "Something has wrong", Toast.LENGTH_SHORT).show();
+
                 });
                 builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
                     dialog.cancel();

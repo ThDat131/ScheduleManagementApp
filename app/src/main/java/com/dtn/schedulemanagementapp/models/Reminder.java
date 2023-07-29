@@ -1,8 +1,9 @@
 package com.dtn.schedulemanagementapp.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Reminder {
+public class Reminder implements Serializable {
     private int id;
     private String nameRemind;
     private String timeRemind;
@@ -22,6 +23,11 @@ public class Reminder {
         this.timeRemind = timeRemind;
         this.scheduleId = scheduleId;
         this.soundId = soundId;
+    }
+    public Reminder(String nameRemind, String timeRemind, int scheduleId) {
+        this.nameRemind = nameRemind;
+        this.timeRemind = timeRemind;
+        this.scheduleId = scheduleId;
     }
 
     @Override

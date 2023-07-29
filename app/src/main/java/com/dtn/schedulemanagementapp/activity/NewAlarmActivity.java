@@ -1,10 +1,15 @@
 package com.dtn.schedulemanagementapp.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,17 +23,24 @@ import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.database.ReminderController;
 import com.dtn.schedulemanagementapp.database.SoundController;
 import com.dtn.schedulemanagementapp.models.Reminder;
+import com.dtn.schedulemanagementapp.models.Schedule;
 import com.dtn.schedulemanagementapp.models.Sound;
+import com.dtn.schedulemanagementapp.utils.AlarmReceiver;
+import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class NewAlarmActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    Schedule schedule;
     ArrayList<Sound> soundList = new ArrayList<Sound>();
     Reminder reminder;
 
@@ -37,8 +49,11 @@ public class NewAlarmActivity extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_alarm);
 
+        getSupportActionBar().setTitle("Alarm");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent i = getIntent();
-        int scheID = i.getIntExtra("ScheduleID", 1);
+        schedule = (Schedule) i.getSerializableExtra("schedule");
 
         ReminderController rCtrl = new ReminderController(this);
 //        SoundController sCtrl = new SoundController(this);
@@ -78,7 +93,7 @@ public class NewAlarmActivity extends AppCompatActivity implements AdapterView.O
         if (check!=0){
             reminder = rCtrl.getRemindByRemindID(check);
             edtAlarmName.setText(reminder.getNameRemind());
-            edtAlarmTime.setText(reminder.getTimeRemind());
+            edtAlarmTime.setText(reminder.getTimeRemind().substring(11, 16));
             spinSoundName.setSelection(reminder.getSoundId());
 //            reminder.setSoundId(spinSoundName.getSelectedItem().getId());
         }
@@ -86,17 +101,51 @@ public class NewAlarmActivity extends AppCompatActivity implements AdapterView.O
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reminder = new Reminder(edtAlarmName.getText().toString(),
-                        edtAlarmTime.getText().toString(),
-                        scheID,
-//                        Integer.parseInt(spinSoundName.getSelectedItem().toString().substring(0,1)));
-                        1);
-                if(check!=0) {
-                    rCtrl.editReminder(reminder);
-                }else {
-                    rCtrl.addNewReminder(reminder);
+
+                if (edtAlarmName.getText().toString().isEmpty() ||
+                    edtAlarmTime.getText().toString().isEmpty()) {
+                    Toast.makeText(NewAlarmActivity.this, getString(R.string.input_required), Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                Toast.makeText(NewAlarmActivity.this, "Add remind successfully!", Toast.LENGTH_SHORT).show();
+
+                String timeAlarm = schedule.getStartDate().substring(0, 10) + " " + edtAlarmTime.getText().toString() + ":00";
+                reminder = new Reminder(
+                        edtAlarmName.getText().toString(),
+                        timeAlarm,
+                        schedule.getId());
+                if(check!=0) {
+                    reminder.setId(check);
+                    if (rCtrl.editReminder(reminder) > 0) {
+                        Toast.makeText(NewAlarmActivity.this, "Change remind successfully!", Toast.LENGTH_SHORT).show();
+                        Intent intentBack = new Intent(NewAlarmActivity.this, NewScheduleActivity.class);
+                        i.putExtra("ScheduleID", schedule.getId());
+                        startActivity(intentBack);
+                    }
+                    else Toast.makeText(NewAlarmActivity.this, "Something has wrong", Toast.LENGTH_SHORT).show();
+
+                }else {
+                    long id = rCtrl.addNewReminder(reminder);
+                    if (id != -1) {
+                        String time = reminder.getTimeRemind();
+                        TimeZone timeZone = TimeZone.getTimeZone(ZoneId.systemDefault());
+                        Calendar timeCalendar = Calendar.getInstance(timeZone);
+                        Date date = CalendarUtils.StringToDateTime(time, "yyyy-MM-dd HH:mm:ss");
+                        timeCalendar.setTime(date);
+
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                        Intent intent = new Intent(NewAlarmActivity.this, AlarmReceiver.class);
+                        intent.putExtra("reminder", reminder);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(NewAlarmActivity.this, reminder.getId(), intent, PendingIntent.FLAG_IMMUTABLE);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeCalendar.getTimeInMillis(), pendingIntent);
+
+                        Toast.makeText(NewAlarmActivity.this, "Add remind successfully!", Toast.LENGTH_SHORT).show();
+
+                        Intent intentBack = new Intent(NewAlarmActivity.this, NewScheduleActivity.class);
+                        intentBack.putExtra("ScheduleID", schedule.getId());
+                        startActivity(intentBack);
+                    }
+                    else Toast.makeText(NewAlarmActivity.this, "Something has wrong", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -108,6 +157,18 @@ public class NewAlarmActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent i = new Intent(this, NewScheduleActivity.class);
+            i.putExtra("ScheduleID", schedule.getId());
+            startActivity(i);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 }

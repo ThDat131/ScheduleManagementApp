@@ -45,13 +45,13 @@ public class ReminderController {
         return database.update(DBHelper.TABLE_REMINDER, values, DBHelper.REMINDER_COL_ID + "= ?", args);
     }
 
-    public long deleteReminder(Reminder rmd) {
-        String[] args = {rmd.getId() + ""};
+    public long deleteReminder(int rmdId) {
+        String[] args = {String.valueOf(rmdId)};
         return database.delete(DBHelper.TABLE_REMINDER, DBHelper.REMINDER_COL_ID + "= ?", args);
     }
 
-    public ArrayList<Reminder> getReminderByScheduleID(int scheduleID) throws ParseException {
-        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+    public ArrayList<Reminder> getReminderByScheduleID(int scheduleID) {
+//        SimpleDateFormat dateSimple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
         ArrayList<Reminder> reminders = new ArrayList<>();
         String query = "SELECT * "

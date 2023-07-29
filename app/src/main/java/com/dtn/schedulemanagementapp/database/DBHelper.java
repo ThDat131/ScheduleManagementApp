@@ -127,9 +127,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 + REMINDER_COL_NAME + " VARCHAR(50),"
                 + REMINDER_COL_TIME_REMIND + " DATETIME NOT NULL,"
                 + REMINDER_COL_SCHEDULE_ID + " INTEGER NOT NULL,"
-                + REMINDER_COL_SOUND_ID + " INTEGER NOT NULL,"
-                + "FOREIGN KEY (" + REMINDER_COL_SCHEDULE_ID + ") REFERENCES " + TABLE_SCHEDULE + "(" + SCHEDULE_COL_ID + "),"
-                + "FOREIGN KEY (" + REMINDER_COL_SOUND_ID + ") REFERENCES " + TABLE_SOUND + "(" + SOUND_COL_ID + ")"
+                + REMINDER_COL_SOUND_ID + " INTEGER,"
+                + "FOREIGN KEY (" + REMINDER_COL_SCHEDULE_ID + ") REFERENCES " + TABLE_SCHEDULE + "(" + SCHEDULE_COL_ID + ")" + " ON DELETE CASCADE,"
+                + "FOREIGN KEY (" + REMINDER_COL_SOUND_ID + ") REFERENCES " + TABLE_SOUND + "(" + SOUND_COL_ID + ")" + " ON DELETE CASCADE"
                 + ");";
 
         db.execSQL(CREATE_USER_TABLE);

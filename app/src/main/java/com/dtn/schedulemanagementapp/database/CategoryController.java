@@ -79,6 +79,25 @@ public class CategoryController {
     public List<Category> getCategoriesByUser(String username) {
         List<Category> categories = new ArrayList<>();
         String query = "SELECT * FROM " + helper.TABLE_CATEGORY
+                + " WHERE " + DBHelper.CATEGORY_COL_USERNAME + " =?"
+                + " OR " + DBHelper.CATEGORY_COL_USERNAME + " =?";
+        String[] args = {username, "admin"};
+
+        Cursor c = database.rawQuery(query, args);
+        while (c.moveToNext()){
+            Category category = new Category();
+            category.setId(c.getInt(0));
+            category.setName(c.getString(1));
+            category.setUsername(c.getString(3));
+            category.setColor(c.getString(2));
+            categories.add(category);
+        }
+        return categories;
+    }
+
+    public List<Category> getCategoriesByOnlyUser(String username) {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM " + helper.TABLE_CATEGORY
                 + " WHERE " + DBHelper.CATEGORY_COL_USERNAME + " =?";
         String[] args = {username};
 

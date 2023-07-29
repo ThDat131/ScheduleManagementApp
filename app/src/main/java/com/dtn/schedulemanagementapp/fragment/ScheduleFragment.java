@@ -22,6 +22,7 @@ import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Schedule;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ScheduleFragment extends Fragment {
 
     private ScheduleController schCtrl;
     private RecyclerView rcvSchedules;
-    private Button btnNewSchedule;
+    private FloatingActionButton btnNewSchedule;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule> scheduleArrayList;
 
