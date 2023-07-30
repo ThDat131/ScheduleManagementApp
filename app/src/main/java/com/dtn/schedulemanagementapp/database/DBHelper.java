@@ -149,8 +149,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String INSERT_CATEGORY = "INSERT INTO " + TABLE_CATEGORY + " ("
                 + CATEGORY_COL_NAME + ","
-                + CATEGORY_COL_USERNAME + ")"
-                + "VALUES ('Study', 'admin'), ('Work', 'admin'), ('Family', 'admin');";
+                + CATEGORY_COL_USERNAME + ","
+                + CATEGORY_COL_COLOR + ")"
+                + "VALUES ('Study', 'admin', '#ff770001'), ('Work', 'admin', '#ff770020'), ('Family', 'admin', '#ff770300');";
 
         String INSERT_SCHEDULE = "INSERT INTO " + TABLE_SCHEDULE + " ("
                 + SCHEDULE_COL_NAME + ","

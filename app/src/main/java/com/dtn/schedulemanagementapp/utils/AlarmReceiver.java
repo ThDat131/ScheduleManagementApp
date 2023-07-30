@@ -27,13 +27,22 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        mp = MediaPlayer.create(context, Settings.System.DEFAULT_RINGTONE_URI);
-        mp.start();
+
         Reminder reminder = (Reminder) intent.getSerializableExtra("reminder");
-        showNotification(context, reminder.getNameRemind(), reminder.getNameRemind());
+        showNotification(context, String.valueOf(reminder.getId()), reminder.getNameRemind());
 //        if (intent.getStringExtra("stop_notify").equals("stop")) {
 //            mp.stop();
 //        }
+
+        mp = MediaPlayer.create(context, Settings.System.DEFAULT_RINGTONE_URI);
+        mp.start();
+
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            }
+        });
 
     }
 
@@ -58,6 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
         notificationManager.notify(0, builder.build());
+
 
     }
 }

@@ -18,8 +18,11 @@ import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.adapter.ScheduleAdapter;
 import com.dtn.schedulemanagementapp.database.ScheduleController;
 import com.dtn.schedulemanagementapp.models.Schedule;
+import com.dtn.schedulemanagementapp.utils.CalendarUtils;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -98,12 +101,14 @@ public class CalendarFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth, 0, 0, 0);
                 Date date = calendar.getTime();
-                 schCtrl = new ScheduleController(view.getContext());
+                schCtrl = new ScheduleController(view.getContext());
                 scheduleAdapter.setData(schCtrl.getScheduleByDate(date, username));
             }
+
         });
 
         return view;
     }
+
 
 }

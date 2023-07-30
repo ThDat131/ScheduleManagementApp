@@ -112,7 +112,8 @@ public class NewAlarmActivity extends AppCompatActivity implements AdapterView.O
                 reminder = new Reminder(
                         edtAlarmName.getText().toString(),
                         timeAlarm,
-                        schedule.getId());
+                        schedule.getId(),
+                        1);
                 if(check!=0) {
                     reminder.setId(check);
                     if (rCtrl.editReminder(reminder) > 0) {
