@@ -1,6 +1,7 @@
 package com.dtn.schedulemanagementapp.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.graphics.Color;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,17 +21,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.dtn.schedulemanagementapp.R;
 import com.dtn.schedulemanagementapp.activity.AdminUserActivity;
+import com.dtn.schedulemanagementapp.activity.MainActivity;
 import com.dtn.schedulemanagementapp.adapter.CategoryAdapter;
 import com.dtn.schedulemanagementapp.adapter.UserAdapter;
 import com.dtn.schedulemanagementapp.database.DBHelper;
 import com.dtn.schedulemanagementapp.models.Category;
 import com.dtn.schedulemanagementapp.user_interface.IOnCategoryItemClickListener;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -117,28 +126,91 @@ public class CategoryFragment extends Fragment {
         fbtnAddCate.setOnClickListener(view ->  {
             AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
             //Create editText for dialog
-            EditText newName = new EditText(this.getContext());
-            newName.setHint("Enter your new category name");
+            LinearLayout linearLayout = new LinearLayout(this.getContext());
+            linearLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            View view1 = LayoutInflater.from(this.getContext()).inflate(R.layout.custom_create_category_layout, linearLayout);
+
+            EditText editTextName = view1.findViewById(R.id.editTextCategoryName);
+            EditText editTextColor = view1.findViewById(R.id.editTextCategoryColor);
+
+            editTextColor.setFocusable(false);
+
+            final int[] selectedColor = new int[1];
+            selectedColor[0] = -1;
+            editTextColor.setOnClickListener(view2 -> showDialogPickColor(new SelectedColorListener() {
+                @Override
+                public void onSelectedColor(int color) {
+                    if (color != -1) {
+                        selectedColor[0] = color;
+                        editTextColor.setText("#"+ Integer.toHexString(color));
+                    }
+
+                }
+            }, selectedColor[0]));
+
+
             builder.setTitle("Add new category")
-                    .setView(newName)
                     .setPositiveButton("OK", (dialogInterface, i) -> {
                         Category category = new Category();
-                        category.setName(newName.getText().toString().trim());
                         String userName = prefs.getString("key_username", "User name");
+                        String name = editTextName.getText().toString().trim();
+                        String color = editTextColor.getText().toString().trim();
+
                         category.setUsername(userName);
-                        long id = categoryController.addCategory(category);
-                        if (id != -1) {
-                            category.setId((int)id);
-                            categoryAdapter.addItem(category);
+
+                        if (name.isEmpty()) {
+                            Toast.makeText(this.getContext(), "Category name can not be empty!!", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(view.getContext(), "Add category success", Toast.LENGTH_SHORT).show();
+                        else if (color.isEmpty()) {
+                            Toast.makeText(this.getContext(), "Category color can not be empty!!", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            category.setName(name);
+                            category.setColor(color);
+                            long id = categoryController.addCategory(category);
+                            if (id != -1) {
+                                category.setId((int) id);
+                                categoryAdapter.addItem(category);
+                            }
+                            Toast.makeText(view.getContext(), "Add category success", Toast.LENGTH_SHORT).show();
+                        }
                     })
                     .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.setView(view1);
             builder.create().show();
         });
 
         return v;
     }
+
+    private void showDialogPickColor(SelectedColorListener listener, int colorSelected) {
+       int defaultColor = CategoryAdapter.generateRandomColor();
+        if (colorSelected != -1) defaultColor = colorSelected;
+        ColorPickerDialogBuilder
+                .with(this.getContext())
+                .setTitle("Choose color")
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .density(12)
+                .initialColor(defaultColor)
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        listener.onSelectedColor(selectedColor);
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .build()
+                .show();
+    }
+
+    interface SelectedColorListener {
+        void onSelectedColor(int color);
+    }
+
 
 
     private void showPopup(View view, Category category) {

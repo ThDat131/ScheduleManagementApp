@@ -80,8 +80,9 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categories.get(position);
         holder.lblCateName.setText(category.getName());
-        category.setColor(generateRandomColor()+"");
-//        holder.categoryActionDropDownMenu.setOnClickListener(view -> listener.onRecieveCategorySuccess(category, position));
+        if (category.getColor() != null)
+            holder.imgCate.setBackgroundColor(Color.parseColor(category.getColor()));
+        else holder.imgCate.setBackgroundColor(generateRandomColor());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +107,6 @@ public class CategoryAdapter  extends RecyclerView.Adapter<CategoryAdapter.ViewH
             super(itemView);
             imgCate = itemView.findViewById(R.id.imgCate);
             lblCateName = itemView.findViewById(R.id.lblCateName);
-            imgCate.setBackgroundColor(generateRandomColor());
         }
     }
     public void setData(ArrayList<Category> categories) {
