@@ -68,6 +68,7 @@ public class CategoryController {
     public boolean updateCategory(Category category){
         ContentValues contentValues = new ContentValues();
         contentValues.put(DBHelper.CATEGORY_COL_NAME, category.getName());
+        contentValues.put(DBHelper.CATEGORY_COL_COLOR, category.getColor());
         return database.update(DBHelper.TABLE_CATEGORY, contentValues,
                 DBHelper.CATEGORY_COL_ID + "= ?", new String[]{String.valueOf(category.getId())}) > 0;
     }
@@ -83,6 +84,7 @@ public class CategoryController {
         ContentValues values = new ContentValues();
         values.put(DBHelper.CATEGORY_COL_NAME, category.getName());
         values.put(DBHelper.CATEGORY_COL_USERNAME, category.getUsername());
+        values.put(DBHelper.CATEGORY_COL_COLOR, category.getColor());
 
         return database.insert(DBHelper.TABLE_CATEGORY, null, values);
     }
