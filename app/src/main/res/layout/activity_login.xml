@@ -61,7 +61,7 @@
             android:shadowDy="-2"
             android:shadowRadius="1"
             android:singleLine="true"
-            android:text="thdat"
+            android:text="admin"
             android:textColor="@color/grey_font" />
 
         <EditText

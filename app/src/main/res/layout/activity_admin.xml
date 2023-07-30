@@ -31,4 +31,10 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Schedule" />
+
+    <Button
+        android:id="@+id/btnStatsM"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="Statistic" />
 </LinearLayout>

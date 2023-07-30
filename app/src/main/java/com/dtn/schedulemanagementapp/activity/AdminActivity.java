@@ -15,6 +15,8 @@ public class AdminActivity extends AppCompatActivity {
     Button btnCategoryM;
     Button btnScheduleM;
 
+    Button btnStatsM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,7 @@ public class AdminActivity extends AppCompatActivity {
         btnUserM = findViewById(R.id.btnUserM);
         btnCategoryM = findViewById(R.id.btnCategoryM);
         btnScheduleM = findViewById(R.id.btnScheduleM);
+        btnStatsM = findViewById(R.id.btnStatsM);
 
         btnUserM.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +51,14 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intentToUser = new Intent(AdminActivity.this, AdminSchedulesUser.class);
+                startActivity(intentToUser);
+            }
+        });
+
+        btnStatsM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentToUser = new Intent(AdminActivity.this, AdminStatsUser.class);
                 startActivity(intentToUser);
             }
         });
